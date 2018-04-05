@@ -7,15 +7,15 @@
 
 
 		<non-jta-data-source>java:/organization</non-jta-data-source>
-		<class>it.h2i.idservice.accountablemodel.User</class>
-		<class>it.h2i.idservice.accountablemodel.Typology</class>
-		<class>it.h2i.idservice.accountablemodel.Transaction</class>
-		<class>it.h2i.idservice.accountablemodel.Role</class>
-		<class>it.h2i.idservice.accountablemodel.Organization</class>
-		<class>it.h2i.idservice.accountablemodel.Function</class>
-		<class>it.h2i.idservice.accountablemodel.Appertain</class>
-		<class>it.h2i.idservice.accountablemodel.Appertainid</class>
-		<class>it.h2i.idservice.accountablemodel.Token</class>
+		<class>it.h2i.idservice.accountablemodel.model.User</class>
+		<class>it.h2i.idservice.accountablemodel.model.Typology</class>
+		<class>it.h2i.idservice.accountablemodel.model.Transaction</class>
+		<class>it.h2i.idservice.accountablemodel.model.Role</class>
+		<class>it.h2i.idservice.accountablemodel.model.Organization</class>
+		<class>it.h2i.idservice.accountablemodel.model.Function</class>
+		<class>it.h2i.idservice.accountablemodel.model.Appertain</class>
+		<class>it.h2i.idservice.accountablemodel.model.Appertainid</class>
+		<class>it.h2i.idservice.accountablemodel.model.Token</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
