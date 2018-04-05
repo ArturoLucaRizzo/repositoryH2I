@@ -7,8 +7,16 @@
     
 
       <non-jta-data-source>java:/organization</non-jta-data-source>
-      <class>it.jboss.model.User</class>
-        <class>it.jboss.model.Token</class>
+      <class>it.h2i.idservice.accountablemodel.User</class>
+          <class>it.h2i.idservice.accountablemodel.Typology</class>
+            <class>it.h2i.idservice.accountablemodel.Transcation</class>
+              <class>it.h2i.idservice.accountablemodel.Role</class>
+                <class>it.h2i.idservice.accountablemodel.Organization</class>
+                  <class>it.h2i.idservice.accountablemodel.Function</class>
+                    <class>it.h2i.idservice.accountablemodel.Appertain</class>
+                      <class>it.h2i.idservice.accountablemodel.Appertainid</class>
+                      <class>it.h2i.idservice.accountablemodel.Token</class>
+                      
       <properties>
          <property name="hibernate.dialect" 
                   value="org.hibernate.dialect.MySQL5Dialect"/>

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -20,95 +21,124 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name="user"
-    ,catalog="organization"
-    , uniqueConstraints = @UniqueConstraint(columnNames="mail") 
-)
+,catalog="organization"
+, uniqueConstraints = @UniqueConstraint(columnNames="mail") 
+		)
 public class User  implements java.io.Serializable {
 
 
-     /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer iduser;
-     private String name;
-     private String surname;
-     private String mail;
-     private String password;
-     private Set<Appertain> appertains = new HashSet<Appertain>(0);
+	private String name;
+	private String surname;
+	private String mail;
+	private String password;
+	private Set<Appertain> appertains = new HashSet<Appertain>(0);
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
+			fetch = FetchType.LAZY)
+	private Token token;
+	@Column(name="enable",nullable=false)
+	private Boolean enable;
 
-    public User() {
-    }
+	public Boolean getEnable() {
+		return enable;
+	}
 
+
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
+	}
+
+
+	public Token getToken() {
+		return token;
+	}
+
+
+	public void setToken(Token token) {
+		this.token = token;
+	}
+
+
+	public User() {
+	}
+
+
+	public User(String name, String surname, String mail, String password) {
+		this.name = name;
+		this.surname = surname;
+		this.mail = mail;
+		this.password = password;
+	}
+	public User(String name, String surname, String mail, String password, Set<Appertain> appertains) {
+		this.name = name;
+		this.surname = surname;
+		this.mail = mail;
+		this.password = password;
+		this.appertains = appertains;
+	}
+
+	@Id @GeneratedValue(strategy=IDENTITY)
+
+	@Column(name="iduser", unique=true, nullable=false)
+	public Integer getIduser() {
+		return this.iduser;
+	}
+
+	public void setIduser(Integer iduser) {
+		this.iduser = iduser;
+	}
+
+	@Column(name="name", nullable=false, length=45)
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Column(name="surname", nullable=false, length=45)
+	public String getSurname() {
+		return this.surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	@Column(name="mail", unique=true, nullable=false, length=45)
+	public String getMail() {
+		return this.mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	@Column(name="password", nullable=false, length=95)
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="user")
+	public Set<Appertain> getAppertains() {
+		return this.appertains;
+	}
+
+	public void setAppertains(Set<Appertain> appertains) {
+		this.appertains = appertains;
+	}
 	
-    public User(String name, String surname, String mail, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.mail = mail;
-        this.password = password;
-    }
-    public User(String name, String surname, String mail, String password, Set<Appertain> appertains) {
-       this.name = name;
-       this.surname = surname;
-       this.mail = mail;
-       this.password = password;
-       this.appertains = appertains;
-    }
-   
-     @Id @GeneratedValue(strategy=IDENTITY)
-    
-    @Column(name="iduser", unique=true, nullable=false)
-    public Integer getIduser() {
-        return this.iduser;
-    }
-    
-    public void setIduser(Integer iduser) {
-        this.iduser = iduser;
-    }
-    
-    @Column(name="name", nullable=false, length=45)
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    @Column(name="surname", nullable=false, length=45)
-    public String getSurname() {
-        return this.surname;
-    }
-    
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-    
-    @Column(name="mail", unique=true, nullable=false, length=45)
-    public String getMail() {
-        return this.mail;
-    }
-    
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-    
-    @Column(name="password", nullable=false, length=95)
-    public String getPassword() {
-        return this.password;
-    }
-    
-    public void setPassword(String password) {
-        this.password = password;
-    }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="user")
-    public Set<Appertain> getAppertains() {
-        return this.appertains;
-    }
-    
-    public void setAppertains(Set<Appertain> appertains) {
-        this.appertains = appertains;
-    }
+	public void resetToken() {
+		token=null;
+	}
 
 
 
