@@ -14,7 +14,7 @@
 		<class>it.h2i.idservice.accountablemodel.model.Organization</class>
 		<class>it.h2i.idservice.accountablemodel.model.Function</class>
 		<class>it.h2i.idservice.accountablemodel.model.Appertain</class>
-		<class>it.h2i.idservice.accountablemodel.model.Appertainid</class>
+		<class>it.h2i.idservice.accountablemodel.model.AppertainId</class>
 		<class>it.h2i.idservice.accountablemodel.model.Token</class>
 
 		<properties>

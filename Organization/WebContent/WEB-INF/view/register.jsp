@@ -76,7 +76,7 @@ p {
 
 					<div class="wrap-input100 validate-input"
 						data-validate="Enter Mail">
-						<input class="input100" type="text" name="mail" placeholder="mail">
+						<input class="input100" type="text" name="mail" placeholder="Mail">
 						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
 					</div>
 
