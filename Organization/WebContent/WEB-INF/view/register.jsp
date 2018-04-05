@@ -60,11 +60,26 @@ p {
 					action="registration">
 
 					<div class="wrap-input100 validate-input"
-						data-validate="Enter username">
-						<input class="input100" type="text" name="username"
-							placeholder="User name"> <span class="focus-input100"
+						data-validate="Enter name">
+						<input class="input100" type="text" name="name"
+							placeholder="Name"> <span class="focus-input100"
 							data-placeholder="&#xe82a;"></span>
 					</div>
+
+					<div class="wrap-input100 validate-input"
+						data-validate="Enter surname">
+						<input class="input100" type="text" name="surname"
+							placeholder="Surname"> <span class="focus-input100"
+							data-placeholder="&#xe82a;"></span>
+					</div>
+
+
+					<div class="wrap-input100 validate-input"
+						data-validate="Enter Mail">
+						<input class="input100" type="text" name="mail" placeholder="mail">
+						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+					</div>
+
 
 					<div class="wrap-input100 validate-input"
 						data-validate="Enter password">
@@ -73,11 +88,7 @@ p {
 							data-placeholder="&#xe80f;"></span>
 					</div>
 
-					<div class="wrap-input100 validate-input"
-						data-validate="Enter Mail">
-						<input class="input100" type="text" name="mail" placeholder="mail">
-						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
-					</div>
+					
 
 					<div class="container-login100-form-btn m-t-32">
 						<button class="login100-form-btn">Register</button>

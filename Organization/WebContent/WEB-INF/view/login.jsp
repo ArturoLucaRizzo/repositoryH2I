@@ -49,9 +49,9 @@
 					action="<c:url value='login' />" method='POST'>
 
 					<div class="wrap-input100 validate-input"
-						data-validate="Enter username">
-						<input class="input100" type="text" name="username"
-							placeholder="User name"> <span class="focus-input100"
+						data-validate="Enter mail">
+						<input class="input100" type="text" name="mail"
+							placeholder="Mail"> <span class="focus-input100"
 							data-placeholder="&#xe82a;"></span>
 					</div>
 
