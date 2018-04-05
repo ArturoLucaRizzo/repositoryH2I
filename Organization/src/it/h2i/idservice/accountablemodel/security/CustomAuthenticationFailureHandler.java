@@ -28,7 +28,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
 		Entity em=new Entity();
 
-		User u =em.DammiUtente(request.getParameter("username"));
+		User u =em.getUserByMail(request.getParameter("username"));
 		if(u!=null && new BCryptPasswordEncoder().matches(request.getParameter("password"), u.getPassword())) {
 			if(exception.getClass().isAssignableFrom(UsernameNotFoundException.class)) {
 				setDefaultFailureUrl("/loginError");

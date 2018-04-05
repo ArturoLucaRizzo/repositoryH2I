@@ -162,13 +162,12 @@ public class SpringController {
 			HttpServletRequest request) throws IOException, NoSuchAlgorithmException{
 
 		String mess="Sei stato registrato. Login: "+name;
-		if(name==null || password==null || mail==null) {
-			System.out.println(name.length()+ " dimensione username");
+		if(name==null ||surname==null || password==null || mail==null) {
 			return new ModelAndView("register","errors","parametri errati o incompleti");
-		}else if(name.length()==0 || password.length()==0 || mail.length()==0)
+		}else if(name.length()==0 || surname.length()==0|| password.length()==0 || mail.length()==0)
 			return new ModelAndView("register","errors","parametri errati o incompleti");
 		Entity entity= new Entity();
-		if(!entity.ValidateRegistration(name, mail)) {
+		if(!entity.ValidateRegistration(mail)) {
 			return new ModelAndView("register","errors","Utente già presente");
 
 		}

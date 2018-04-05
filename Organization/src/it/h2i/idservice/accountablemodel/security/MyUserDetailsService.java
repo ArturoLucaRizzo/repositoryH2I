@@ -24,7 +24,7 @@ public class MyUserDetailsService implements UserDetailsService {
 			new UsernameNotFoundException(username);
 		}
 	
-			User u=entity.DammiUtente(username);
+			User u=entity.getUserByMail(username);
 			if(u!=null)// se l'utente ha confermato la mail ritorna l'user details dell'utente.
 				return new MyUserPrincipal(u);
 		
