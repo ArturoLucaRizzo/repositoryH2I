@@ -63,6 +63,7 @@ public class User  implements java.io.Serializable {
 
 
 	public User() {
+		this.enable=false;
 	}
 
 
@@ -71,6 +72,7 @@ public class User  implements java.io.Serializable {
 		this.surname = surname;
 		this.mail = mail;
 		this.password = password;
+		this.enable=false;
 	}
 	public User(String name, String surname, String mail, String password, Set<Appertain> appertains) {
 		this.name = name;
@@ -78,6 +80,7 @@ public class User  implements java.io.Serializable {
 		this.mail = mail;
 		this.password = password;
 		this.appertains = appertains;
+		this.enable=false;
 	}
 
 	@Id @GeneratedValue(strategy=IDENTITY)
