@@ -37,8 +37,7 @@ public class User  implements java.io.Serializable {
 	private String mail;
 	private String password;
 	private Set<Appertain> appertains = new HashSet<Appertain>(0);
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, 
-			fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Token token;
 	@Column(name="enable",nullable=false)
 	private Boolean enable;
