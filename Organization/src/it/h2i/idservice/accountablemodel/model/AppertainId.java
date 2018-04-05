@@ -12,9 +12,6 @@ import javax.persistence.Embeddable;
 public class AppertainId  implements java.io.Serializable {
 
 
-     /**
-	 * 
-	 */
 	private static final long serialVersionUID = -7326946678596127343L;
 	private int appertainIduser;
      private int appertainIdorganization;
