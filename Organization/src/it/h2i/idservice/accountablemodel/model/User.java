@@ -45,11 +45,6 @@ public class User  implements java.io.Serializable {
 	private boolean enable;
 
 	
-	
-	
-	
-	
-	
 	@Column(name="enable", columnDefinition = "TINYINT")
 	@Type(type = "org.hibernate.type.NumericBooleanType")
 	public boolean getEnable() {

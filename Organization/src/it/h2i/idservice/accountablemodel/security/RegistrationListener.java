@@ -34,7 +34,7 @@ ApplicationListener<OnRegistrationCompleteEvent> {
 			user.setToken(t);        
 			String recipientAddress = user.getMail();
 			String subject = "Registration Confirmation";
-			String confirmationUrl = ""+event.getAppUrl() + "8080/TestSpring/regitrationConfirm?token=" + token;
+			String confirmationUrl = ""+event.getAppUrl() + "regitrationConfirm?token=" + token;
 			String message=" il messaggio è questo Link: ";
 			String text=message + "/n "  + confirmationUrl;
 			new Utility().SendJavaMail("lucah2ialfino@gmail.com", "springmvc", recipientAddress, subject, text);

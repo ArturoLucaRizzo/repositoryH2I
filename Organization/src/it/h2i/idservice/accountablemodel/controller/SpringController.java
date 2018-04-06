@@ -109,9 +109,9 @@ public class SpringController {
 						appUrl.append("?").append(request.getQueryString());
 					}
 					String completeURL = appUrl.toString();
-					StringTokenizer st= new StringTokenizer(completeURL,":", true);		
+					StringTokenizer st= new StringTokenizer(completeURL,"/", true);		
 					String appUrls = "";
-					while (st.hasMoreElements() && i<4) {
+					while (st.hasMoreElements() && i<7) {
 						appUrls+= st.nextToken();
 						i++;
 					}
@@ -120,8 +120,8 @@ public class SpringController {
 					String token=t.getToken();
 					String recipientAddress = user.getMail();
 					String subject = "Registration Confirmation";
-					String confirmationUrl = ""+appUrls + "8080/TestSpring/regitrationConfirm?token=" + token;
-					String message=" il messaggio è questo Link: ";
+					String confirmationUrl = ""+appUrls + "regitrationConfirm?token=" + token;
+					String message=" Clicca sul link per confermare la registrazione:  ";
 					String text=message + "/n "  + confirmationUrl;
 					new Utility().SendJavaMail("lucah2ialfino@gmail.com", "springmvc", recipientAddress, subject, text);
 				} catch (Exception me) {
@@ -179,7 +179,7 @@ public class SpringController {
 			return new ModelAndView("register","errors","Non hai inserito un indirizzo mail valido");
 		}
 		password=new BCryptPasswordEncoder().encode(password);
-		User registered=new User(name,surname, password, mail);
+		User registered=new User(name,surname,mail, password);
 		entity.Insert(registered);
 
 		try {
@@ -189,9 +189,9 @@ public class SpringController {
 				appUrl.append("?").append(request.getQueryString());
 			}
 			String completeURL = appUrl.toString();
-			StringTokenizer st= new StringTokenizer(completeURL,":", true);		
+			StringTokenizer st= new StringTokenizer(completeURL,"/", true);		
 			String appUrls = "";
-			while (st.hasMoreElements() && i<4) {
+			while (st.hasMoreElements() && i<7) {
 				appUrls+= st.nextToken();
 				i++;
 			}
@@ -231,7 +231,7 @@ public class SpringController {
 			return new ModelAndView("errorPage", "errors", "errore imprevisto è scaduto il tempo: ");
 		} 
 
-	//	user.setEnable(true);
+	    user.setEnable(true);
 		user.resetToken();
 		en.DeleteToken(tok);
 		en.merge(user);
