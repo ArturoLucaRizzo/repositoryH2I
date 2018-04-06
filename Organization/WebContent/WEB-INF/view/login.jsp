@@ -48,7 +48,6 @@
 				<form class="login100-form validate-form p-b-33 p-t-5"
 					action="<c:url value='login' />" method='POST'>
  
- 
 					<div class="wrap-input100 validate-input"
 						data-validate="Enter mail">
 						<input class="input100" type="text" name="username"
