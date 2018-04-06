@@ -211,6 +211,7 @@ public class SpringController {
 	@RequestMapping(value = "/regitrationConfirm", method = RequestMethod.GET)
 	public ModelAndView confirmRegistration
 	(WebRequest request, Model model, @RequestParam("token") String token) {
+		
 
 		Locale locale = request.getLocale();
 		Entity en=new Entity();

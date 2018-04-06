@@ -42,7 +42,15 @@ public class Entity {
 			return null;
 		}
 		EntityManager em=c.getEntity();
-		Token to=(Token) em.createQuery("From Token t Where t.token='"+token+"'").getResultList().get(0);
+		List l=em.createQuery("From Token t Where t.token='"+token+"'").getResultList();
+		Token to;
+		
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			to=(Token) l.get(0);
+		}
+		
 		return to;
 
 	}
