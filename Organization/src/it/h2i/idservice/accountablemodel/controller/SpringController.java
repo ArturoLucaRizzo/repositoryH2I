@@ -134,7 +134,7 @@ public class SpringController {
 			}
 		}
 
-		return new ModelAndView("loginError");
+		return new ModelAndView("login");
 	}
 
 
@@ -203,7 +203,8 @@ public class SpringController {
 			return new ModelAndView("register", "errors", "si è verificato un errore sull'invio della mail");
 		}		
 		entity.merge(registered);
-
+		mailTemp=mail;
+		System.out.println("la mail temporanea è :" +mailTemp);
 		return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + mail);
 
 	}
