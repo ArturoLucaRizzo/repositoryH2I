@@ -9,15 +9,10 @@ import javax.persistence.*;
 public class Token {
     private static final int EXPIRATION = 60 * 24;
  
-    @Id
+    
     private int idtoken;
-    @Column(nullable = false, name = "token")
     private String token;
-   
-    @OneToOne
-    @JoinColumn(name = "idtoken")
     private User user;
-    @Column(nullable = false, name = "date")
     private Date date;
     
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
@@ -41,6 +36,7 @@ public class Token {
 
 	}
 
+	@Id
 	public int getIdtoken() {
 		return idtoken;
 	}
@@ -49,6 +45,7 @@ public class Token {
 		this.idtoken = idtoken;
 	}
 
+	@Column(nullable = false, name = "token")
 	public String getToken() {
 		return token;
 	}
@@ -57,6 +54,10 @@ public class Token {
 		this.token = token;
 	}
 
+	
+
+    @OneToOne
+    @JoinColumn(name = "idtoken")
 	public User getUser() {
 		return user;
 	}
@@ -65,6 +66,7 @@ public class Token {
 		this.user = user;
 	}
 
+    @Column(nullable = false, name = "date")
 	public Date getDate() {
 		return date;
 	}
@@ -77,5 +79,5 @@ public class Token {
 		return EXPIRATION;
 	}
      
-    // standard constructors, getters and setters
+    
 }

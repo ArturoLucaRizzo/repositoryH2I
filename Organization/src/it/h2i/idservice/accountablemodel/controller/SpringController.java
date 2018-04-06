@@ -231,7 +231,7 @@ public class SpringController {
 			return new ModelAndView("errorPage", "errors", "errore imprevisto è scaduto il tempo: ");
 		} 
 
-		user.setEnable(true);
+	//	user.setEnable(true);
 		user.resetToken();
 		en.DeleteToken(tok);
 		en.merge(user);
