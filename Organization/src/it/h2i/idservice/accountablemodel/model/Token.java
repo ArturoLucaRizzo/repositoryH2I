@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@Table(name="token")
 public class Token {
     private static final int EXPIRATION = 60 * 24;
  

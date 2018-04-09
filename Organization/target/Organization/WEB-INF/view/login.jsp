@@ -47,10 +47,10 @@
 				<span class="login100-form-title p-b-41"> Account Login </span>
 				<form class="login100-form validate-form p-b-33 p-t-5"
 					action="<c:url value='login' />" method='POST'>
-
+ 
 					<div class="wrap-input100 validate-input"
 						data-validate="Enter mail">
-						<input class="input100" type="text" name="mail"
+						<input class="input100" type="text" name="username"
 							placeholder="Mail"> <span class="focus-input100"
 							data-placeholder="&#xe82a;"></span>
 					</div>

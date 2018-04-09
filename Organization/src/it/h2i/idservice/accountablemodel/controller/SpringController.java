@@ -168,7 +168,7 @@ public class SpringController {
 			return new ModelAndView("register","errors","parametri errati o incompleti");
 		Entity entity= new Entity();
 		if(!entity.ValidateRegistration(mail)) {
-			return new ModelAndView("register","errors","Utente già presente");
+			return new ModelAndView("register","errors","Utente gia presente");
 
 		}
 		Utility ut= new Utility();
@@ -200,11 +200,11 @@ public class SpringController {
 					(registered, request.getLocale(), appUrls));
 		} catch (Exception me) {
 			logger.error("eventooooooooooooooooooooooooooooo",me);
-			return new ModelAndView("register", "errors", "si è verificato un errore sull'invio della mail");
+			return new ModelAndView("register", "errors", "si e verificato un errore sull'invio della mail");
 		}		
 		entity.merge(registered);
 		mailTemp=mail;
-		System.out.println("la mail temporanea è :" +mailTemp);
+		System.out.println("la mail temporanea e:" +mailTemp);
 		return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + mail);
 
 	}
@@ -230,7 +230,7 @@ public class SpringController {
 		if ((tok.getDate().getTime() - cal.getTime().getTime()) <= 0) {
 			String messageValue = messages.getMessage("auth.message.expired", null, locale);
 			model.addAttribute("errors", messageValue);
-			return new ModelAndView("errorPage", "errors", "errore imprevisto è scaduto il tempo: ");
+			return new ModelAndView("errorPage", "errors", "errore imprevisto il tempo e scaduto");
 		} 
 
 	    user.setEnable(true);
