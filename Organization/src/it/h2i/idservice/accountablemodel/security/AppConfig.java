@@ -30,7 +30,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/loginEffettuata").authenticated().and()
 		.formLogin().loginPage("/login").failureHandler(CustomAuthenticationFailureHandler()).defaultSuccessUrl("/loginEffettuata", true)
 		.usernameParameter("username")
-		.passwordParameter("password");
+		.passwordParameter("password")
+		.and().csrf().disable();
 
 	}
 

@@ -69,6 +69,10 @@
 
 						<a href="register">Registration</a>
 					</div>
+					<div class="container-login100-form-btn m-t-32">
+
+					<a href="/samling/samling.html" class="login100-form-btn">Loggati con Samling</a>
+				</div>
 					<div class=”box”>
 						<p style="color: red;">${errors}</p>
 					</div>
@@ -80,6 +84,7 @@
 				</form>
 			</div>
 		</div>
+		
 	</div>
 
 
