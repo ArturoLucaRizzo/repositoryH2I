@@ -43,8 +43,9 @@
 
 <center>
 
+<h1>
 ${status}
-
+</h1>
 </center>
 
 
