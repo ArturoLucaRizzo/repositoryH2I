@@ -17,4 +17,5 @@ it/h2i/idservice/accountablemodel/security/MyUserPrincipal.class
 it/h2i/idservice/accountablemodel/controller/SpringController.class
 it/h2i/idservice/accountablemodel/model/Token.class
 it/h2i/idservice/accountablemodel/connection/Utility$1.class
+it/h2i/idservice/accountablemodel/security/SAMLUserDetailsServiceImpl.class
 it/h2i/idservice/accountablemodel/security/RegistrationListener.class

@@ -3,6 +3,7 @@ package it.h2i.idservice.accountablemodel.controller;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -14,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -147,9 +149,33 @@ public class SpringController {
 
 		return new ModelAndView("pageMailSend","user","Ops! Pare che tu non abbia verificato il tuo account!");
 	}
-	@RequestMapping(value = "/errorPage", method = RequestMethod.GET)
-	public ModelAndView errorPage() {
-		return new ModelAndView("errorPage");
+	@RequestMapping(value = "/samlListener", method = RequestMethod.POST)
+	public ModelAndView errorPage(HttpServletResponse response, 
+			HttpServletRequest request) throws IOException {
+		System.out.println("1"+request.getHeader("Content-type"));
+		System.out.println("2"+request.getContentType());
+		Enumeration parameterNames = request.getParameterNames();
+		String encoded=request.getParameter("SAMLResponse");
+		String decode=new Utility().Base64(encoded);
+		String userid=new Utility().getUserIDsaml(decode, "emailAddress");
+		String status=new Utility().getStatusSaml(decode);
+		Entity e=new Entity();
+		User u=e.getUserByMail(userid); // se user id non è nel db.
+		if(u==null) {
+			return new ModelAndView("samlListener","status", "<h1>failed  !User not found!<h1>");
+		}
+		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		mailTemp=u.getMail();
+		if(u.getEnable()) {
+		response.sendRedirect("loginEffettuata");
+		ModelAndView mav=new ModelAndView("loginEffettuata","a",auth.getName());
+		return mav;
+		}
+		else {
+			response.sendRedirect("pageMailSend");
+			return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + mailTemp);
+		}
 	}
 
 
@@ -204,7 +230,6 @@ public class SpringController {
 		}		
 		entity.merge(registered);
 		mailTemp=mail;
-		System.out.println("la mail temporanea e:" +mailTemp);
 		return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + mail);
 
 	}

@@ -15,10 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+
 @Configuration
 @EnableWebSecurity
 public class AppConfig extends WebSecurityConfigurerAdapter {
-	
 
 
 	@Override
@@ -33,7 +33,13 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 		.passwordParameter("password")
 		.and().csrf().disable();
 
+
 	}
+
+
+
+
+
 
 	@Override
 	public void configure(AuthenticationManagerBuilder builder)
@@ -45,12 +51,12 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	public MyUserDetailsService UserDetailsService() {
 		return new MyUserDetailsService();
 	}; 
-	
+
 	@Bean
 	public CustomAuthenticationFailureHandler CustomAuthenticationFailureHandler() {
 		return new CustomAuthenticationFailureHandler();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		PasswordEncoder pe =new BCryptPasswordEncoder();
