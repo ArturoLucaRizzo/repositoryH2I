@@ -162,7 +162,7 @@ public class SpringController {
 		Entity e=new Entity();
 		User u=e.getUserByMail(userid); // se user id non è nel db.
 		if(u==null) {
-			return new ModelAndView("samlListener","status", "<h1>failed  !User not found!<h1>");
+			return new ModelAndView("samlListener","status", "<br><br><br><br><h2 style=\"color: white;\">Failed!</h2><h2 style=\"color: white;\">User not found!</h2>");
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
