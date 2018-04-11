@@ -10,7 +10,8 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class Utility {
 
@@ -24,40 +25,45 @@ public class Utility {
 
 		return sb.toString();
 	}
-	public boolean  isValidEmailAddress(String mail) {
-		Pattern VALID_EMAIL_ADDRESS_REGEX = 
-				Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(mail);
-		return matcher.find();	
+
+	public boolean isValidEmailAddress(String mail) {
+		Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+				Pattern.CASE_INSENSITIVE);
+		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(mail);
+		return matcher.find();
 
 	}
+
 	public boolean isValidPassword(String password) {
 
-		if(password.length()<6) {
+		if (password.length() < 6) {
 			return false;
 		}
 		return true;
 	}
+
 	public String Base64(String encoded) {
 		byte[] decoded = Base64.getDecoder().decode(encoded);
-		return new String(decoded,StandardCharsets.UTF_8);
+		return new String(decoded, StandardCharsets.UTF_8);
 
 	}
-	public String getUserIDsaml(String decoded, String formatUserId) {
-		StringTokenizer st=new StringTokenizer(decoded,":><");
-		while (st.hasMoreElements()) {
-			String parse=st.nextToken();
-			String sub="";
-			if(formatUserId.length()<parse.length()) {
-				 sub=parse.substring(0, formatUserId.length());
-			}			
-			if(sub.equals(formatUserId)) {
 
-				if(st.hasMoreElements()) {
+	public String getUserIDsaml(String decoded, String formatUserId) {
+
+		StringTokenizer st = new StringTokenizer(decoded, ":><");
+
+		while (st.hasMoreElements()) {
+			String parse = st.nextToken();
+			String sub = "";
+			if (formatUserId.length() < parse.length()) {
+				sub = parse.substring(0, formatUserId.length());
+			}
+			if (sub.equals(formatUserId)) {
+
+				if (st.hasMoreElements()) {
 
 					return st.nextToken();
 
-
 				}
 
 			}
@@ -66,34 +72,149 @@ public class Utility {
 		return null;
 
 	}
+
+	public String getNameSaml(String decoded) {
+
+		String formatUserId = "Name=" + '"' + "name" + '"';
+
+		StringTokenizer st = new StringTokenizer(decoded);
+
+		while (st.hasMoreElements()) {
+
+			String parse = st.nextToken();
+			String sub = "";
+			if (formatUserId.length() < parse.length()) {
+
+				sub = parse.substring(0, formatUserId.length());
+
+			}
+
+			if (sub.equals(formatUserId)) {
+
+				if (st.hasMoreElements()) {
+
+					String name = st.nextToken();
+
+					int i = name.indexOf(">") + 1;
+					int f = name.indexOf("<");
+
+					String n = name.substring(i, f);
+
+					return n;
+
+				}
+
+			}
+
+		}
+		return null;
+	}
+
+	public String getSurnameSaml(String decoded) {
+
+		String formatUserId = "Name=" + '"' + "surname" + '"';
+
+		StringTokenizer st = new StringTokenizer(decoded);
+
+		while (st.hasMoreElements()) {
+
+			String parse = st.nextToken();
+			String sub = "";
+			if (formatUserId.length() < parse.length()) {
+
+				sub = parse.substring(0, formatUserId.length());
+
+			}
+
+			if (sub.equals(formatUserId)) {
+
+				if (st.hasMoreElements()) {
+
+					String name = st.nextToken();
+
+					int i = name.indexOf(">") + 1;
+					int f = name.indexOf("<");
+
+					String n = name.substring(i, f);
+
+					return n;
+
+				}
+
+			}
+
+		}
+		return null;
+	}
+
+	public String getPasswordSaml(String decoded) {
+
+		String formatUserId = "Name=" + '"' + "password" + '"';
+
+		StringTokenizer st = new StringTokenizer(decoded);
+
+		while (st.hasMoreElements()) {
+
+			String parse = st.nextToken();
+			String sub = "";
+			if (formatUserId.length() < parse.length()) {
+
+				sub = parse.substring(0, formatUserId.length());
+
+			}
+
+			if (sub.equals(formatUserId)) {
+
+				if (st.hasMoreElements()) {
+
+					String name = st.nextToken();
+
+					int i = name.indexOf(">") + 1;
+					int f = name.indexOf("<");
+
+					String n = name.substring(i, f);
+
+					PasswordEncoder pe = new BCryptPasswordEncoder();
+					String password = pe.encode(n);
+
+					return password;
+
+				}
+
+			}
+
+		}
+		return null;
+	}
+
 	public String getStatusSaml(String decoded) {
-		StringTokenizer st=new StringTokenizer(decoded,":>/<");
-		String temp="";
-		while (st.hasMoreElements()) {	
-			String parse=st.nextToken();
-			String sub="";
-			if("status".length()<=parse.length() ) {
-				 sub=parse.substring(0, "status".length());
+		StringTokenizer st = new StringTokenizer(decoded, ":>/<");
+		String temp = "";
+		while (st.hasMoreElements()) {
+			String parse = st.nextToken();
+			String sub = "";
+			if ("status".length() <= parse.length()) {
+				sub = parse.substring(0, "status".length());
 			}
-			if(sub.equals("status")&& temp.equals("2.0")) {
+			if (sub.equals("status") && temp.equals("2.0")) {
 
-				if(st.hasMoreElements()) {
-					String last=st.nextToken();
+				if (st.hasMoreElements()) {
+					String last = st.nextToken();
 
-					return last.substring(0, last.length()-1);
-
+					return last.substring(0, last.length() - 1);
 
 				}
 
 			}
-			temp=parse;
+			temp = parse;
 		}
-	
+
 		return null;
 
 	}
-	public void SendJavaMail(String sourceAddress, String passwordSourceAddress, String destinationAddress, String subject, String mess) {
 
+	public void SendJavaMail(String sourceAddress, String passwordSourceAddress, String destinationAddress,
+			String subject, String mess) {
 
 		Properties props = new Properties();
 		props.put("mail.smtp.starttls.enable", "true");
@@ -102,8 +223,7 @@ public class Utility {
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(sourceAddress, passwordSourceAddress);
 			}
@@ -113,11 +233,9 @@ public class Utility {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(sourceAddress));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(destinationAddress));
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinationAddress));
 			message.setSubject(subject);
-			message.setText(mess);			
-
+			message.setText(mess);
 
 			Transport.send(message);
 
@@ -127,5 +245,3 @@ public class Utility {
 
 	}
 }
-
-

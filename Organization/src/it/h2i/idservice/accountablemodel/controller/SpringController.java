@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -152,17 +153,59 @@ public class SpringController {
 	@RequestMapping(value = "/samlListener", method = RequestMethod.POST)
 	public ModelAndView errorPage(HttpServletResponse response, 
 			HttpServletRequest request) throws IOException {
+	
 		System.out.println("1"+request.getHeader("Content-type"));
 		System.out.println("2"+request.getContentType());
+		
 		Enumeration parameterNames = request.getParameterNames();
 		String encoded=request.getParameter("SAMLResponse");
+		
 		String decode=new Utility().Base64(encoded);
 		String userid=new Utility().getUserIDsaml(decode, "emailAddress");
 		String status=new Utility().getStatusSaml(decode);
+		
 		Entity e=new Entity();
+		
 		User u=e.getUserByMail(userid); // se user id non è nel db.
 		if(u==null) {
-			return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Failed!</h2><h2 style=\"color: white;\">User not found!</h2>");
+	
+			
+	        String name = new Utility().getNameSaml(decode);
+			String surname = new Utility().getSurnameSaml(decode);
+			String password = new Utility().getPasswordSaml(decode);
+			
+			
+			u = new User(name,surname,userid,password);
+			e.Insert(u);
+			
+			
+			try {
+				StringBuffer appUrl = request.getRequestURL();
+				int i=0;
+				if (request.getQueryString() != null) {
+					appUrl.append("?").append(request.getQueryString());
+				}
+				String completeURL = appUrl.toString();
+				StringTokenizer st= new StringTokenizer(completeURL,"/", true);		
+				String appUrls = "";
+				while (st.hasMoreElements() && i<7) {
+					appUrls+= st.nextToken();
+					i++;
+				}
+				
+				eventPublisher.publishEvent(new OnRegistrationCompleteEvent
+						(u, request.getLocale(), appUrls));
+			} catch (Exception me) {
+				logger.error("eventooooooooooooooooooooooooooooo",me);
+				return new ModelAndView("register", "errors", "si e verificato un errore sull'invio della mail");
+			}		
+			e.merge(u);
+			mailTemp=userid;
+			return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + userid);
+			
+			
+			
+	//		return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Failed!</h2><h2 style=\"color: white;\">User not found!</h2>");
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
