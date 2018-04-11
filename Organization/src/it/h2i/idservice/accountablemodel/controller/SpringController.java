@@ -178,34 +178,8 @@ public class SpringController {
 			u = new User(name,surname,userid,password);
 			e.Insert(u);
 			
-			
-			try {
-				StringBuffer appUrl = request.getRequestURL();
-				int i=0;
-				if (request.getQueryString() != null) {
-					appUrl.append("?").append(request.getQueryString());
-				}
-				String completeURL = appUrl.toString();
-				StringTokenizer st= new StringTokenizer(completeURL,"/", true);		
-				String appUrls = "";
-				while (st.hasMoreElements() && i<7) {
-					appUrls+= st.nextToken();
-					i++;
-				}
-				
-				eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-						(u, request.getLocale(), appUrls));
-			} catch (Exception me) {
-				logger.error("eventooooooooooooooooooooooooooooo",me);
-				return new ModelAndView("register", "errors", "si e verificato un errore sull'invio della mail");
-			}		
-			e.merge(u);
-			mailTemp=userid;
-			return new ModelAndView("pageMailSend", "user", "Abbiamo inviato una mail all'indirizzo: " + userid);
-			
-			
-			
-	//		return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Failed!</h2><h2 style=\"color: white;\">User not found!</h2>");
+					
+			return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Ok!</h2><h2 style=\"color: white;\">Utente registrato!</h2>");
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
