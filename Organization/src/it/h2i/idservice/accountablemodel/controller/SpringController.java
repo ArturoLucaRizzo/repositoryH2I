@@ -2,8 +2,10 @@ package it.h2i.idservice.accountablemodel.controller;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -54,6 +56,43 @@ public class SpringController {
 	@RequestMapping("/")
 	public String handleRequest(HttpServletRequest request,HttpServletResponse response, Model model) {
 		return "login";
+	}
+	
+	@RequestMapping("/enable")
+	public ModelAndView enable(@RequestParam("mail") String mail) {
+
+		Entity e = new Entity();
+		User user = e.getUserByMail(mail);
+
+		if (user.getEnable()) {
+			user.setEnable(false);
+		} else {
+			user.setEnable(true);
+		}
+
+		e.merge(user);
+		List<User> usrs = e.getAllUser();
+
+		ModelAndView map = new ModelAndView("allUser");
+		map.addObject("users", usrs);
+
+		return map;
+	}
+	
+	
+	
+	
+	@RequestMapping("/allUser")
+	public ModelAndView handleRequest() {
+
+		Entity e = new Entity();
+		List<User> usrs = e.getAllUser();
+
+		ModelAndView map = new ModelAndView("allUser");
+		map.addObject("users", usrs);
+
+		return map;
+
 	}
 
 	@RequestMapping(value = "/loginEffettuata", method = RequestMethod.GET)

@@ -35,6 +35,22 @@ public class Entity {
 		return u;
 
 	}
+	
+	public List<User> getAllUser() {
+	
+		EntityManager em=c.getEntity();
+		List l=em.createQuery("From User ").getResultList();
+		
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			return l;
+		}
+		
+		
+
+	}
+	
 
 
 	public Token getToken(String token) {
