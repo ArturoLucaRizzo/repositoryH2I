@@ -49,8 +49,7 @@
 			<th style="color: white;">Name</th>
 			<th style="color: white;">Surname</th>
 			<th style="color: white;">Mail</th>
-			<th style="color: white;">Enable</th>
-			<th style="color: white;">Action</th>
+			<th style="color: white;">Enabled</th>
 
 			<c:forEach var="u" items="${users}">
 				<tr>
@@ -58,10 +57,7 @@
 					<td style="color: white">${u.name}</td>
 					<td style="color: white;">${u.surname}</td>
 					<td style="color: white;">${u.mail}</td>
-					<td style="color: white;">${u.enable}</td>
-					<td style="color: white;">
-					
-					<c:if test="${u.enable}">
+					<td style="color: white;"><c:if test="${u.enable}">
 							<a href="enable?mail=${u.mail}" style="color: red;">Disable</a>
 					</c:if> <c:if test="${not u.enable}">
 							<a href="enable?mail=${u.mail}" style="color: green;">Enable</a>

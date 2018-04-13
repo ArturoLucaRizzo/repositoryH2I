@@ -60,7 +60,7 @@ public class Organization  implements java.io.Serializable {
 		this.idorganization = idorganization;
 	}
 
-	@Column(name="piva", nullable=false, length=45)
+	@Column(name="piva", nullable=false, unique=true,length=45)
 	public String getPiva() {
 		return this.piva;
 	}

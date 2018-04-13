@@ -1,11 +1,14 @@
 package it.h2i.idservice.accountablemodel.connection;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import it.h2i.idservice.accountablemodel.model.Appertain;
 import it.h2i.idservice.accountablemodel.model.Organization;
+import it.h2i.idservice.accountablemodel.model.Role;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
 
@@ -36,6 +39,22 @@ public class Entity {
 		return u;
 
 	}
+	public Organization getOrganization(String piva) {
+		if(piva==null ||piva.equals("")) {
+			return null;
+		}
+		EntityManager em=c.getEntity();
+		List l=em.createQuery("From Organization o Where o.piva='"+piva+"'").getResultList();
+		Organization o;
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			o=(Organization) l.get(0);
+		}
+		
+		return o;
+
+	}
 	
 	public List<User> getAllUser() {
 	
@@ -47,8 +66,22 @@ public class Entity {
 		}else {
 			return l;
 		}
+
+	}
+	public List<User> getAllUserOfOrganization(Organization organization) {
 		
+		EntityManager em=c.getEntity();
+		List l=em.createQuery("From Appertain a where a.appertain_idorganization='"+organization.getIdorganization()+"'").getResultList();
 		
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			List<User> lu= new LinkedList();
+			for(Object a: l) {
+				lu.add(((Appertain) a).getUser());								
+			}
+			return lu;
+		}
 
 	}
 	
@@ -61,10 +94,13 @@ public class Entity {
 			return null;
 		}else {
 			return l;
-		}
-		
-		
+		}		
 
+	}
+	
+	public void setRole(Organization organization, User u, Role role) {
+		
+		
 	}
 	
 	

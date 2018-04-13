@@ -5,10 +5,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
+import it.h2i.idservice.accountablemodel.model.Appertain;
 import it.h2i.idservice.accountablemodel.model.Organization;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
@@ -45,6 +51,9 @@ public class SpringController {
 	final static Logger logger = Logger.getLogger(SpringController.class); 
 	public static String mailTemp=null;
 	boolean pageMailSendFlag=true;
+	String vistaUserCorrente="";
+	String currentOrganization;
+	List<User> currentUsers;
 
 	@Autowired
 	ApplicationEventPublisher eventPublisher;
@@ -60,15 +69,42 @@ public class SpringController {
 		return "login";
 	}
 	
-	@RequestMapping("/allOrganizations")
+	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
 		
 		Entity e = new Entity();
 		
 		List<Organization> o = e.getAllOrganizations();
 
-		ModelAndView map = new ModelAndView("allOrganizations");
+		ModelAndView map = new ModelAndView("organizationManager");
 		map.addObject("organizations", o);
+		vistaUserCorrente="allUserOrganization";
+		return map;
+	}
+	@RequestMapping("/ViewUsers")
+	public ModelAndView ViewUsers(@RequestParam("piva") String piva,HttpServletResponse response) {
+		vistaUserCorrente="allUserOrganization";
+		Entity e = new Entity();
+		Organization o= e.getOrganization(piva);
+		currentOrganization=o.getPiva();		
+		currentUsers=null;
+		
+		
+		Set appertains = e.getOrganization(currentOrganization).getAppertains();
+		currentUsers= new LinkedList<User>();
+		for( Object a: appertains) {
+			currentUsers.add(((Appertain) a).getUser());			
+		}				
+		try {
+			response.sendRedirect(vistaUserCorrente);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		ModelAndView map = new ModelAndView(vistaUserCorrente);
+		map.addObject("users", currentUsers);
+		map.addObject("organization", o.getName());
+
+
 		return map;
 	}
 	
@@ -87,14 +123,23 @@ public class SpringController {
 		}
 
 		e.merge(user);
-		List<User> usrs = e.getAllUser();
+		currentUsers=null;
+		currentUsers= new LinkedList<User>();
+		if(vistaUserCorrente.equals("allUser")) {
+		}else if(vistaUserCorrente.equals("allUserOrganization")) {
+			Set appertains = e.getOrganization(currentOrganization).getAppertains();
+			for( Object a: appertains) {
+				currentUsers.add(((Appertain) a).getUser());			
+			}
+			
+		}
 		try {
-			response.sendRedirect("allUser");
+			response.sendRedirect(vistaUserCorrente);
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}				
-		ModelAndView map = new ModelAndView("allUser");
-		map.addObject("users", usrs);
+		ModelAndView map = new ModelAndView(vistaUserCorrente);
+		map.addObject("users", currentUsers);
 
 		return map;
 	}
@@ -104,13 +149,22 @@ public class SpringController {
 	
 	@RequestMapping("/allUser")
 	public ModelAndView handleRequest() {
-
 		Entity e = new Entity();
-		List<User> usrs = e.getAllUser();
-
 		ModelAndView map = new ModelAndView("allUser");
-		map.addObject("users", usrs);
+		currentUsers=null;
+		currentUsers= new LinkedList<User>();
+		currentUsers.addAll(e.getAllUser());
+		map.addObject("users", currentUsers);
+		vistaUserCorrente="allUser";
+		return map;
 
+	}
+	@RequestMapping("/allUserOrganization")
+	public ModelAndView allUserOrganization() {
+
+		ModelAndView map = new ModelAndView("allUserOrganization");
+		map.addObject("users", currentUsers);
+		vistaUserCorrente="allUserOrganization";
 		return map;
 
 	}
