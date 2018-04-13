@@ -55,16 +55,16 @@
 			<c:forEach var="u" items="${users}">
 				<tr>
 
-					<td style="color: blue;">${u.name}</td>
-					<td style="color: blue;">${u.surname}</td>
-					<td style="color: blue;">${u.mail}</td>
-					<td style="color: blue;">${u.enable}</td>
-					<td style="color: blue;">
+					<td style="color: white">${u.name}</td>
+					<td style="color: white;">${u.surname}</td>
+					<td style="color: white;">${u.mail}</td>
+					<td style="color: white;">${u.enable}</td>
+					<td style="color: white;">
 					
 					<c:if test="${u.enable}">
-							<a href="enable?mail=${u.mail}" style="color: blue;">Disable</a>
+							<a href="enable?mail=${u.mail}" style="color: red;">Disable</a>
 					</c:if> <c:if test="${not u.enable}">
-							<a href="enable?mail=${u.mail}" style="color: blue;">Enable</a>
+							<a href="enable?mail=${u.mail}" style="color: green;">Enable</a>
 					</c:if>
 					
 					</td>

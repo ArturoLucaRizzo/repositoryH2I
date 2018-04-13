@@ -75,7 +75,7 @@ public class SpringController {
 	
 	
 	@RequestMapping("/enable")
-	public ModelAndView enable(@RequestParam("mail") String mail) {
+	public ModelAndView enable(@RequestParam("mail") String mail,HttpServletResponse response) {
 
 		Entity e = new Entity();
 		User user = e.getUserByMail(mail);
@@ -88,7 +88,11 @@ public class SpringController {
 
 		e.merge(user);
 		List<User> usrs = e.getAllUser();
-
+		try {
+			response.sendRedirect("allUser");
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}				
 		ModelAndView map = new ModelAndView("allUser");
 		map.addObject("users", usrs);
 
