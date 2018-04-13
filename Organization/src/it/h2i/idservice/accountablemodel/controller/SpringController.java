@@ -2,6 +2,7 @@ package it.h2i.idservice.accountablemodel.controller;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
@@ -33,6 +34,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
+import it.h2i.idservice.accountablemodel.model.Organization;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
 import it.h2i.idservice.accountablemodel.security.OnRegistrationCompleteEvent;
@@ -57,6 +59,20 @@ public class SpringController {
 	public String handleRequest(HttpServletRequest request,HttpServletResponse response, Model model) {
 		return "login";
 	}
+	
+	@RequestMapping("/allOrganizations")
+	public ModelAndView organizations() {
+		
+		Entity e = new Entity();
+		
+		List<Organization> o = e.getAllOrganizations();
+
+		ModelAndView map = new ModelAndView("allOrganizations");
+		map.addObject("organizations", o);
+		return map;
+	}
+	
+	
 	
 	@RequestMapping("/enable")
 	public ModelAndView enable(@RequestParam("mail") String mail) {
@@ -222,7 +238,11 @@ public class SpringController {
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
+		
+		
+		
 		mailTemp=u.getMail();
+		
 		if(u.getEnable()) {
 		response.sendRedirect("loginEffettuata");
 		ModelAndView mav=new ModelAndView("loginEffettuata","a",auth.getName());

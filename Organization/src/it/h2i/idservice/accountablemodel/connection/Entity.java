@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import it.h2i.idservice.accountablemodel.model.Organization;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
 
@@ -50,6 +51,22 @@ public class Entity {
 		
 
 	}
+	
+	public List<Organization> getAllOrganizations() {
+		
+		EntityManager em=c.getEntity();
+		List l=em.createQuery("From Organization ").getResultList();
+		
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			return l;
+		}
+		
+		
+
+	}
+	
 	
 
 

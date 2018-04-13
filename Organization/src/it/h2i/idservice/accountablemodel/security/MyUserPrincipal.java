@@ -1,11 +1,16 @@
 package it.h2i.idservice.accountablemodel.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import it.h2i.idservice.accountablemodel.model.Appertain;
 import it.h2i.idservice.accountablemodel.model.User;
+import it.h2i.idservice.accountablemodel.model.*;
 
 
 
@@ -19,7 +24,7 @@ public class MyUserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
