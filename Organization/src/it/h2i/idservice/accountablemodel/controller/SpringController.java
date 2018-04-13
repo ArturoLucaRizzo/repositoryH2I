@@ -68,12 +68,42 @@ public class SpringController {
 	public String handleRequest(HttpServletRequest request,HttpServletResponse response, Model model) {
 		return "login";
 	}
-	
+	@RequestMapping("/testList")
+	public ModelAndView testList() {
+
+		Entity e = new Entity();
+		ModelAndView map = new ModelAndView("testList");
+		currentUsers=null;
+		currentUsers= new LinkedList<User>();
+		currentUsers.addAll(e.getAllUser());
+		String field ="";	
+		int i=0;
+		for(User u :currentUsers) {
+			i++;
+			field+=	"      <tr>" + 
+					"        <td class='id' style='display:none;'>"+i+"</td>" + 
+					"        <td class='name'style='color:white;'>"+u.getName()+"</td>" + 
+					"        <td class='surname'style='color:white;'>"+u.getSurname()+"</td>" + 
+					"        <td class='mail'style='color:white;'>"+u.getMail()+"</td>\r\n" + 
+					"        <td class='edit'><button class=\"edit-item-btn\">Edit</button></td>\r\n" + 
+					"        <td class='remove'><button class=\"remove-item-btn\">Remove</button></td>\r\n" + 
+					"        <td style=color: white;>"+((u.getEnable() ? "<a href='enable?mail="+u.getMail()+
+							"' style='color: red;'>Disable</a>" : "<a href='enable?mail="+u.getMail()+"' style='color: green;'>Enable</a>"))+
+					"      </tr>";
+
+		}
+
+
+		map.addObject("users", field);
+		vistaUserCorrente="testList";
+		return map;
+	}
+
 	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
-		
+
 		Entity e = new Entity();
-		
+
 		List<Organization> o = e.getAllOrganizations();
 
 		ModelAndView map = new ModelAndView("organizationManager");
@@ -88,8 +118,8 @@ public class SpringController {
 		Organization o= e.getOrganization(piva);
 		currentOrganization=o.getPiva();		
 		currentUsers=null;
-		
-		
+
+
 		Set appertains = e.getOrganization(currentOrganization).getAppertains();
 		currentUsers= new LinkedList<User>();
 		for( Object a: appertains) {
@@ -107,9 +137,9 @@ public class SpringController {
 
 		return map;
 	}
-	
-	
-	
+
+
+
 	@RequestMapping("/enable")
 	public ModelAndView enable(@RequestParam("mail") String mail,HttpServletResponse response) {
 
@@ -131,7 +161,7 @@ public class SpringController {
 			for( Object a: appertains) {
 				currentUsers.add(((Appertain) a).getUser());			
 			}
-			
+
 		}
 		try {
 			response.sendRedirect(vistaUserCorrente);
@@ -143,10 +173,10 @@ public class SpringController {
 
 		return map;
 	}
-	
-	
-	
-	
+
+
+
+
 	@RequestMapping("/allUser")
 	public ModelAndView handleRequest() {
 		Entity e = new Entity();
@@ -193,7 +223,7 @@ public class SpringController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.isAuthenticated()) {
 			ModelAndView model = new ModelAndView("loginEffettuata");;
-			
+
 		}
 
 		ModelAndView model = new ModelAndView("login");;
@@ -266,45 +296,45 @@ public class SpringController {
 	@RequestMapping(value = "/samlListener", method = RequestMethod.POST)
 	public ModelAndView errorPage(HttpServletResponse response, 
 			HttpServletRequest request) throws IOException {
-	
+
 		System.out.println("1"+request.getHeader("Content-type"));
 		System.out.println("2"+request.getContentType());
-		
+
 		Enumeration parameterNames = request.getParameterNames();
 		String encoded=request.getParameter("SAMLResponse");
-		
+
 		String decode=new Utility().Base64(encoded);
 		String userid=new Utility().getUserIDsaml(decode, "emailAddress");
 		String status=new Utility().getStatusSaml(decode);
-		
+
 		Entity e=new Entity();
-		
+
 		User u=e.getUserByMail(userid); // se user id non è nel db.
 		if(u==null) {
-	
-			
-	        String name = new Utility().getNameSaml(decode);
+
+
+			String name = new Utility().getNameSaml(decode);
 			String surname = new Utility().getSurnameSaml(decode);
 			String password = new Utility().getPasswordSaml(decode);
-			
-			
+
+
 			u = new User(name,surname,userid,password);
 			e.Insert(u);
-			
-					
+
+
 			return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Ok!</h2><h2 style=\"color: white;\">Utente registrato!</h2>");
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		
-		
-		
+
+
+
 		mailTemp=u.getMail();
-		
+
 		if(u.getEnable()) {
-		response.sendRedirect("loginEffettuata");
-		ModelAndView mav=new ModelAndView("loginEffettuata","a",auth.getName());
-		return mav;
+			response.sendRedirect("loginEffettuata");
+			ModelAndView mav=new ModelAndView("loginEffettuata","a",auth.getName());
+			return mav;
 		}
 		else {
 			response.sendRedirect("pageMailSend");
@@ -355,7 +385,7 @@ public class SpringController {
 				appUrls+= st.nextToken();
 				i++;
 			}
-			
+
 			eventPublisher.publishEvent(new OnRegistrationCompleteEvent
 					(registered, request.getLocale(), appUrls));
 		} catch (Exception me) {
@@ -370,7 +400,7 @@ public class SpringController {
 	@RequestMapping(value = "/regitrationConfirm", method = RequestMethod.GET)
 	public ModelAndView confirmRegistration
 	(WebRequest request, Model model, @RequestParam("token") String token) {
-		
+
 
 		Locale locale = request.getLocale();
 		Entity en=new Entity();
@@ -392,7 +422,7 @@ public class SpringController {
 			return new ModelAndView("errorPage", "errors", "errore imprevisto il tempo e scaduto");
 		} 
 
-	    user.setEnable(true);
+		user.setEnable(true);
 		user.resetToken();
 		en.DeleteToken(tok);
 		en.merge(user);
