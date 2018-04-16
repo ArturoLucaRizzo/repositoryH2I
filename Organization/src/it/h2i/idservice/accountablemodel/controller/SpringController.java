@@ -25,6 +25,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -343,7 +344,19 @@ public class SpringController {
 	@RequestMapping(value = "/loginEffettuata", method = RequestMethod.GET)
 	public ModelAndView adminPage() {		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		return new ModelAndView("loginEffettuata","a",auth.getName());
+		ModelAndView mav=new ModelAndView("loginEffettuata");
+		mav.addObject("a",auth.getName());
+		if(auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
+	        System.out.println(" FUNZIONA");
+			mav.addObject("ManageOrganization","<div class=\"container-login100-form-btn m-t-32\">\r\n" + 
+					"\r\n" + 
+					"					<a href=\"organizationManager\" class=\"login100-form-btn\">ManagementORG</a>\r\n" + 
+					"				</div>");
+		}else {
+			System.out.println(" NON FUNZIONA");
+			return mav;
+		}
+		return mav;
 	}
 
 

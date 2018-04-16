@@ -25,17 +25,27 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.
 		authorizeRequests()
-		//.antMatchers("/allUser").hasRole("ADMIN")
-		.antMatchers("/").permitAll()
-		.antMatchers("/organizationManager").hasAuthority("USER")
-		.antMatchers("/allUserOrganization").hasAuthority("USER")
-		.antMatchers("/login").permitAll()
-		.antMatchers("/loginEffettuata").authenticated().and()
-		.formLogin().loginPage("/login").failureHandler(CustomAuthenticationFailureHandler()).defaultSuccessUrl("/loginEffettuata", true)
+		.antMatchers("/")
+		.permitAll()
+		.antMatchers("/login")
+		.permitAll()
+		.antMatchers("/login")
+		.permitAll()
+		.antMatchers("/organizationManager")
+		.hasAuthority("ADMIN")
+		.antMatchers("/allUserOrganization")
+		.hasAuthority("ADMIN")
+		.antMatchers("/loginEffettuata")
+		.authenticated()
+		.and()
+		.formLogin().loginPage("/login")
+		.failureHandler(CustomAuthenticationFailureHandler())
+		.defaultSuccessUrl("/loginEffettuata", true)
 		.usernameParameter("username")
 		.passwordParameter("password")
-		.and().csrf().disable();
-;
+		.and()
+		.csrf().disable();
+		;
 
 
 

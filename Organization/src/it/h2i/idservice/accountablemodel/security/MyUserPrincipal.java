@@ -27,7 +27,7 @@ public class MyUserPrincipal implements UserDetails {
 	public Collection<GrantedAuthority> getAuthorities() {
 		  List<GrantedAuthority> authorities = new LinkedList<GrantedAuthority>();
 	        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-	        System.out.println("        sd " +authorities.get(0));
+
 	        return authorities;
 
 
