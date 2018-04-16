@@ -266,7 +266,6 @@ public class SpringController {
 			e.Delete(o);
 			e.close();
 			mavCurrent=returnViewOrganization("Organizzazione : "+o.getName()+" con P.Iva="+o.getPiva()+", rimossa con successo");
-
 			return "redirect:/"+vistaCorrente;
 		}else {
 			mavCurrent=returnViewOrganization("Error in remove");

@@ -45,6 +45,25 @@ public class User  implements java.io.Serializable {
 	private String surname;
 	private String mail;
 	private String password;
+	private String role;
+	
+	
+	
+	
+	
+	
+	@Column(name="role", nullable=false, length=45)
+	public String getRole() {
+		return role;
+	}
+
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+
+
 	private Set<Appertain> appertains = new HashSet<Appertain>(0);
 	
 	private Token token;
@@ -86,6 +105,7 @@ public class User  implements java.io.Serializable {
 		this.mail = mail;
 		this.password = password;
 		this.enable=false;
+		this.role="USER";
 	}
 	public User(String name, String surname, String mail, String password, Set<Appertain> appertains) {
 		this.name = name;
@@ -93,6 +113,7 @@ public class User  implements java.io.Serializable {
 		this.mail = mail;
 		this.password = password;
 		this.appertains = appertains;
+		this.role="USER";
 		this.enable=false;
 	}
 

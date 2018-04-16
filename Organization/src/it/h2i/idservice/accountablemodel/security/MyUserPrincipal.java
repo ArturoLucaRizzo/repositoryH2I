@@ -2,6 +2,7 @@ package it.h2i.idservice.accountablemodel.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -15,17 +16,21 @@ import it.h2i.idservice.accountablemodel.model.*;
 
 
 public class MyUserPrincipal implements UserDetails {
-    private User user;
- 
-    public MyUserPrincipal(User user) {
-        this.user = user;
-    }
+	private User user;
+
+	public MyUserPrincipal(User user) {
+		this.user = user;
+	}
 
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		return null;
+	public Collection<GrantedAuthority> getAuthorities() {
+		  List<GrantedAuthority> authorities = new LinkedList<GrantedAuthority>();
+	        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+	        System.out.println("        sd " +authorities.get(0));
+	        return authorities;
+
+
 	}
 
 	@Override
