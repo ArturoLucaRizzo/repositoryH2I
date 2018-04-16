@@ -13,6 +13,9 @@ import javax.mail.internet.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import it.h2i.idservice.accountablemodel.model.Organization;
+import it.h2i.idservice.accountablemodel.model.User;
+
 public class Utility {
 
 	public String Sha1(String password) throws NoSuchAlgorithmException {
@@ -41,7 +44,51 @@ public class Utility {
 		}
 		return true;
 	}
+	public String ListToForm(List<User> list) {
+		String field=null;
+		int i=0;
+		if(list!=null) {
+			field="";
+			for(User u : list) {
+				i++;
+				field+=	"      <tr>\r\n" + 
+						"        <td class='id' style='display:none;'>"+i+"</td>\r\n" + 
+						"        <td class='name' name='name' style='color:white;'>"+u.getName()+"</td>\r\n" + 
+						"        <td class='surname'name='surname' style='color:white;'>"+u.getSurname()+"</td>\r\n" + 
+						"        <td class='mail'name='mail' style='color:white;'>"+u.getMail()+"</td>\r\n" + 
+						"        <td class='edit'><button class=\"edit-item-btn\">Edit</button></td>\r\n" + 
+						"        <td class='remove'> <a href='remove?mail="+u.getMail()+"'style='color: red;'>Remove</a></td>\r\n" + 
+						"        <td style=color: white;>"+((u.getEnable() ? "<a href='enable?mail="+u.getMail()+
+								"' style='color: red;'>Disable</a>" : "<a href='enable?mail="+u.getMail()+"' style='color: green;'>Enable</a>\r\n"))+
+						"      </tr>\r\n";
 
+			}
+
+		}
+		return field;
+	}
+	public String ListToFormOrg(List<Organization> list) {
+		String field=null;
+		int i=0;
+		if(list!=null) {
+			field="";
+			for(Organization o : list) {
+				i++;
+				field+=	"      <tr>\r\n" + 
+						"        <td class='id' style='color:white;'>"+o.getIdorganization()+"</td>\r\n" + 
+						"        <td class='organization' name='organization' style='color:white;'>"+o.getName()+"</td>\r\n" + 
+						"        <td class='piva'name='piva' style='color:white;'>"+o.getPiva()+"</td>\r\n" + 
+						"        <td style='color:white;'>"+o.getAppertains().size()+"</td>\r\n" + 
+						"        <td class='edit'><button class=\"edit-item-btn\">Edit</button></td>\r\n" + 
+						"        <td class='remove'> <a href='removeOrg?piva="+o.getPiva()+"'style='color: red;'>Remove</a></td>\r\n" + 
+						"        <td class='view'> <a href='viewUsersOrg?piva="+o.getPiva()+"'style='color: green;'>View</a></td>\r\n" +
+						"      </tr>\r\n";
+
+			}
+
+		}
+		return field;
+	}
 	public String Base64(String encoded) {
 		byte[] decoded = Base64.getDecoder().decode(encoded);
 		return new String(decoded, StandardCharsets.UTF_8);
@@ -243,5 +290,16 @@ public class Utility {
 			throw new RuntimeException(e);
 		}
 
+	}
+	public boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+	    // only got here if we didn't return false
+	    return true;
 	}
 }

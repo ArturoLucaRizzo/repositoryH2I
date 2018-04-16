@@ -5,10 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Organization</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 <!--===============================================================================================-->
@@ -35,58 +32,75 @@
 <link rel="stylesheet" type="text/css"
 	href="vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="css/util.css">
-<link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <!--===============================================================================================-->
 </head>
+<link rel="stylesheet" type="text/css" href="css/list.css">
+<!--===============================================================================================-->
+</head>
 <body>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 
-	<div align="center">
-		<h1 style="color: white;">Organization</h1>
+	<div align="center" id="organizations">
+		<h1 style="color: white;">Organizations</h1>
 		<br> <br>
-		<table style="width: 75%">
-			<th style="color: white;">Name</th>
-			<th style="color: white;">P.Iva</th>
-			<th style="color: white;">Numero Utenti</th>
-			<th style="color: white;">utenti</th>
-
-
-			<c:forEach var="o" items="${organizations}">
+		<table style="width: 85%">
+			<thead>
 				<tr>
-
-					<td style="color: white">${o.name}</td>
-					<td style="color: white;">${o.piva}</td>
-					<td style="color: white;">${o.getAppertains().size()}</td>
-					<td style="color: white;"><a href="ViewUsers?piva=${o.piva}"style ="color: green">Visualizza</a></td>
-
-					</td>
+					<th class="sort" data-sort="id"><h3
+							style='color: #69bcf0; font-weight: Bold'>ID</h3></th>
+					<th class="sort" data-sort="organization"><h3
+							style='color: #69bcf0; font-weight: Bold'>Organization</h3></th>
+					<th class="sort" data-sort="piva"><h3
+							style='color: #69bcf0; font-weight: Bold'>P.Iva</h3></th>
+					<th class="sort" data-sort="Users"><h3
+							style='color: #69bcf0; font-weight: Bold'>Users</h3></th>
+					<th colspan="2"><input type="text" class="search"
+						placeholder="Search contact" /></th>
 				</tr>
-			</c:forEach>
+			</thead>
+			<tbody class="list">${organizations}
+			</tbody>
 		</table>
+		<br> <br> <br> <br>
+		<form action="addAndEditOrg" method="POST">
+			<div>
+				<table align="center">
+					<td class="organization"><input type="hidden" name="idfield"
+						id="id-field" placeholder="ID" /><input type="text"
+						id="organization-field" name="organizationfield"
+						placeholder="Organization" /></td>
+					<td class="piva"><input type="text" name="pivafield"
+						id="piva-field" placeholder="P.iva" /></td>
+					<td class="add">
+						<button class="edit-item-btn" id="add-btn" name="adds"
+							value="true">Add</button>
+						<button class="edit-item-btn" id="edit-btn" name="editfield"
+							value="true">Edit</button>
+					</td>
+				</table>
+			</div>
 	</div>
+	<div align="center">
+		<h3 style='color: red;'>${error}</h3>
+	</div>
+	</form>
 
 
 
 
 
 
-	<!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
+
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="js/list.js"></script>
+
+	<script src="js/organizationList.js"></script>
 </body>
 </html>

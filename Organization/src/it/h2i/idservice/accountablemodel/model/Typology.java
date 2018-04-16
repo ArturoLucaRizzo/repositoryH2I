@@ -54,7 +54,7 @@ public class Typology  implements java.io.Serializable {
     public void setIdtype(Integer idtype) {
         this.idtype = idtype;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="typology_idorganization")
     public Organization getOrganization() {
         return this.organization;
@@ -63,7 +63,7 @@ public class Typology  implements java.io.Serializable {
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="typology_idfunction")
     public Function getFunction() {
         return this.function;

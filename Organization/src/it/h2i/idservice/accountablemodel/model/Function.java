@@ -78,7 +78,7 @@ public class Function  implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="function")
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="function")
     public Set<Role> getRoles() {
         return this.roles;
     }
@@ -86,7 +86,7 @@ public class Function  implements java.io.Serializable {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="function")
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="function")
     public Set<Typology> getTypologies() {
         return this.typologies;
     }

@@ -29,6 +29,13 @@ import org.hibernate.annotations.Type;
 public class User  implements java.io.Serializable {
 
 
+	@Override
+	public int hashCode() {
+		return getIduser();
+	}
+
+
+
 	/**
 	 * 
 	 */
@@ -135,7 +142,7 @@ public class User  implements java.io.Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="user")
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="user")
 	public Set<Appertain> getAppertains() {
 		return this.appertains;
 	}

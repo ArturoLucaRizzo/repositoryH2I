@@ -1,15 +1,14 @@
 var options = {
-  valueNames: [ 'id', 'name', 'surname', 'mail', 'enable']
+  valueNames: [ 'id', 'name', 'surname', 'mail' ]
 };
 
 // Init list
 var contactList = new List('user', options);
 
 var idField = $('#id-field'),
-    nameField = $('#name-field'),
-    surnameField = $('#surname-field'),
+    nameField = $('#name-field').hide(),
+    surnameField = $('#surname-field').hide(),
     mailField = $('#mail-field'),
-    enableField = $('#enable-field'),
     addBtn = $('#add-btn'),
     editBtn = $('#edit-btn').hide(),
     removeBtns = $('.remove-item-btn'),
@@ -19,29 +18,20 @@ var idField = $('#id-field'),
 refreshCallbacks();
 
 addBtn.click(function() {
-  contactList.add({
-    id: Math.floor(Math.random()*110000),
-    name: nameField.val(),
-    surname: surnameField.val(),
-    mail: mailField.val(),
-    enable: enableField.val()
-  });
-  clearFields();
+
+  nameField.hide('');
+  surnameField.hide('');
   refreshCallbacks();
 });
 
 editBtn.click(function() {
   var item = contactList.get('id', idField.val())[0];
-  item.values({
-    id:idField.val(),
-    name: nameField.val(),
-    surname: surnameField.val(),
-    mail: mailField.val(),
-    enable: enableField.val()
-  });
-  clearFields();
+
+  nameField.hide('');
+  surnameField.hide('');
   editBtn.hide();
   addBtn.show();
+
 });
 
 function refreshCallbacks() {
@@ -52,6 +42,8 @@ function refreshCallbacks() {
   removeBtns.click(function() {
     var itemId = $(this).closest('tr').find('.id').text();
     contactList.remove('id', itemId);
+    editBtn.hide();
+    addBtn.show();
   });
   
   editBtns.click(function() {
@@ -61,16 +53,17 @@ function refreshCallbacks() {
     nameField.val(itemValues.name);
     surnameField.val(itemValues.surname);
     mailField.val(itemValues.mail);
-    enableField.val(itemValues.enable)
-    
+    nameField.show('');
+    surnameField.show('');
     editBtn.show();
     addBtn.hide();
   });
 }
 
+
 function clearFields() {
   nameField.val('');
   surnameField.val('');
   mailField.val('');
-  enableField.val('');
+
 }

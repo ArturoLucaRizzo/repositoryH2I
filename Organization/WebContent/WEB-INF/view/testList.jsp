@@ -5,9 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <!--===============================================================================================-->
 <link rel="icon" type="image/png" href="images/icons/favicon.ico" />
 <!--===============================================================================================-->
@@ -37,44 +35,53 @@
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="css/style.css">
+<!--===============================================================================================-->
+</head>
 <link rel="stylesheet" type="text/css" href="css/list.css">
 <!--===============================================================================================-->
 </head>
 <body>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+
 	<div align="center" id="user">
 		<h1 style="color: white;">Users</h1>
 		<br> <br>
-		<thead>
-			<tr>
-				<table style="width: 75%">
-					<th class="sort" data-sort="name" style="color: white;">Name</th>
-					<th class="sort" data-sort="surname" style="color: white;">Surname</th>
-					<th class="sort" data-sort="mail" style="color: white;">Mail</th>
-					<th class="sort" data-sort="Enabled" style="color: white;">Enabled</th>
+		<table style="width: 75%">
+			<thead>
+				<tr>
+					<th class="sort" data-sort="name">Name</th>
+					<th class="sort" data-sort="surname">surname</th>
+					<th class="sort" data-sort="mail">mail</th>
 					<th colspan="2"><input type="text" class="search"
-						placeholder="Search User" /></th>
-					</tr>
-					</thead>
-					<tbody class="list">${users}
-					</thead>
-				</table>
+						placeholder="Search contact" /></th>
+				</tr>
+			</thead>
+			<tbody class="list">${users}
+			</tbody>
+		</table>
+		<form action="test" method="post">
+			<div align="center">
 				<table>
-					<td class="name"><input type="hidden" id="id-field" /> <input
-						type="text" id="name-field" placeholder="Name" /></td>
-					<td class="surname"><input type="text" id="surname-field"
-						placeholder="Surname" /></td>
-					<td class="mail"><input type="text" id="mail-field"
-						placeholder="Mail" /></td>
+					<td class="name"><input type="hidden" name="idfield"
+						id="id-field" /> <input type="text" id="name-field"
+						name="namefield" placeholder="Name" /></td>
+					<td class="surname"><input type="text" name="surnamefield"
+						id="surname-field" placeholder="surname" /></td>
+					<td class="mail"><input type="text" name="mailfield"
+						id="mail-field" placeholder="mail" /></td>
 					<td class="add">
-					<td class="enable"><input type="text" id="enable-field"
-						placeholder="enable" /></td>
-					<td class="add">
-						<button id="add-btn">Add</button>
-						<button id="edit-btn">Edit</button>
+						<button id="add-btn" name="add" method="post">Add</button>
+						<button id="edit-btn" name="editfield" method="post">Edit</button>
 					</td>
-				</table>
-	</div>
 
+				</table>
+			</div>
+		</form>
+	</div>
 
 
 
@@ -85,28 +92,8 @@
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+	<script src="js/list.js"></script>
 
 	<script src="js/provalist.js"></script>
-	<script src="js/list.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-	<!--===============================================================================================-->
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
-	<script src="js/list.js"></script>
-
 </body>
 </html>

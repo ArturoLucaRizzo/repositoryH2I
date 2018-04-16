@@ -34,13 +34,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
 import it.h2i.idservice.accountablemodel.model.Appertain;
+import it.h2i.idservice.accountablemodel.model.AppertainId;
 import it.h2i.idservice.accountablemodel.model.Organization;
+import it.h2i.idservice.accountablemodel.model.Role;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
 import it.h2i.idservice.accountablemodel.security.OnRegistrationCompleteEvent;
@@ -51,8 +54,11 @@ public class SpringController {
 	final static Logger logger = Logger.getLogger(SpringController.class); 
 	public static String mailTemp=null;
 	boolean pageMailSendFlag=true;
-	String vistaUserCorrente="";
+	boolean flagOrg=true;
+	String vistaCorrente="";
 	String currentOrganization;
+	List<Organization> currentOrganizations;
+	ModelAndView mavCurrent;
 	List<User> currentUsers;
 
 	@Autowired
@@ -65,83 +71,235 @@ public class SpringController {
 
 
 	@RequestMapping("/")
-	public String handleRequest(HttpServletRequest request,HttpServletResponse response, Model model) {
+	public String index(HttpServletRequest request,HttpServletResponse response, Model model) {
 		return "login";
 	}
-	@RequestMapping("/testList")
-	public ModelAndView testList() {
 
-		Entity e = new Entity();
-		ModelAndView map = new ModelAndView("testList");
-		currentUsers=null;
-		currentUsers= new LinkedList<User>();
-		currentUsers.addAll(e.getAllUser());
-		String field ="";	
-		int i=0;
-		for(User u :currentUsers) {
-			i++;
-			field+=	"      <tr>" + 
-					"        <td class='id' style='display:none;'>"+i+"</td>" + 
-					"        <td class='name'style='color:white;'>"+u.getName()+"</td>" + 
-					"        <td class='surname'style='color:white;'>"+u.getSurname()+"</td>" + 
-					"        <td class='mail'style='color:white;'>"+u.getMail()+"</td>\r\n" + 
-					"        <td class='edit'><button class=\"edit-item-btn\">Edit</button></td>\r\n" + 
-					"        <td class='remove'><button class=\"remove-item-btn\">Remove</button></td>\r\n" + 
-					"        <td style=color: white;>"+((u.getEnable() ? "<a href='enable?mail="+u.getMail()+
-							"' style='color: red;'>Disable</a>" : "<a href='enable?mail="+u.getMail()+"' style='color: green;'>Enable</a>"))+
-					"      </tr>";
+
+	@RequestMapping(value="/addAndEditOrg", method = RequestMethod.POST)
+	public String addeditButtonOrg(HttpServletRequest request,
+			HttpServletResponse response) {
+		vistaCorrente="organizationManager";
+		String idchar=request.getParameter("idfield");
+
+		if(request.getParameter("editfield")!=null) {
+			if(idchar==null || !new Utility().isInteger(idchar)) {
+				mavCurrent=returnViewOrganization("Error");
+				return "redirect:/"+vistaCorrente;
+			}
+			int id=Integer.parseInt(idchar);
+			String organization=request.getParameter("organizationfield");
+			String piva=request.getParameter("pivafield");
+			Organization o=null;
+			for( Organization org: currentOrganizations) {
+				if(org.getIdorganization()==id) {
+					o=org;
+				}
+			}	
+
+			if(o!=null && organization!=null && piva!=null) {
+				if(o.getName().equals(organization) && o.getPiva().equals(piva)) {
+					mavCurrent=returnViewOrganization("nessuna Modifica rilevata");
+					return "redirect:/"+vistaCorrente;
+				}
+				// controllo appartenenza organizzazione
+				o.setName(organization);
+				o.setPiva(piva);
+				Entity e = new Entity();
+				e.merge(o);
+				e.close();
+				//aggiorna currentuserS degli utenti apparteneti alle org
+
+				mavCurrent=returnViewOrganization("");
+				return "redirect:/"+vistaCorrente;
+
+			}else {
+				mavCurrent=returnViewOrganization("Modifiche errate");
+				return "redirect:/"+vistaCorrente;
+
+			}
+
+		}else {
+			//add button della view 
+			String piva=request.getParameter("pivafield");
+			if(piva==null || piva.equals("")) {
+				mavCurrent=returnViewOrganization("piva errata");
+				return "redirect:/"+vistaCorrente;
+			}
+			for( Organization org: currentOrganizations) {
+				if(org.getPiva().equals(piva)) {
+					mavCurrent=returnViewOrganization("utente gia presente");
+					return "redirect:/"+vistaCorrente;
+				}
+			}		
+			String organization=request.getParameter("organizationfield");
+			if(organization==null || organization.equals("")) {
+				mavCurrent=returnViewOrganization("nome organizzazione errato");
+				return "redirect:/"+vistaCorrente;
+			}
+			Entity e = new Entity();
+			Organization o= new Organization();
+			o.setName(organization);
+			o.setPiva(piva);
+			e.Insert(o);
+			e.close();
+			mavCurrent=returnViewOrganization("Organizzazione inserita con successo");
+			return "redirect:/"+vistaCorrente;
+
 
 		}
 
+	}
+	@RequestMapping(value="/addAndEdit", method = RequestMethod.POST)
+	public String addeditButton(HttpServletRequest request,
+			HttpServletResponse response) {
+		vistaCorrente="allUserOrganization";
 
-		map.addObject("users", field);
-		vistaUserCorrente="testList";
-		return map;
+		String mail=request.getParameter("mailfield");
+		Entity e = new Entity();
+		if(mail==null || !new Utility().isValidEmailAddress(mail)) {
+			mavCurrent=returnViewUser("Mail Errata");
+			return "redirect:/"+vistaCorrente;
+		}else if(request.getParameter("editfield")!=null) {//edit button della view
+			String name=request.getParameter("namefield");
+			String surname=request.getParameter("surnamefield");
+			User u=null;
+			for( User user: currentUsers) {
+				if(user.getMail().equals(mail)) {
+					u=user;
+				}
+			}	
+
+			if(u!=null && name!=null && surname!=null) {
+				if(u.getName().equals(name) && u.getSurname().equals(surname)) {
+					mavCurrent=returnViewUser("Nessuna modifica rilevata");
+					return "redirect:/"+vistaCorrente;
+				}
+				// controllo appartenenza organizzazione
+				u.setName(name);
+				u.setSurname(surname);
+				u.setMail(mail);
+				e.merge(u);
+				e.close();
+				//aggiorna currentuserS degli utenti apparteneti alle org
+
+				mavCurrent=returnViewUser("");
+				return "redirect:/"+vistaCorrente;
+
+			}else {
+				mavCurrent=returnViewUser("Modifiche errate");
+				return "redirect:/"+vistaCorrente;
+
+			}
+
+		}else {
+			//add button della view 
+			User u= e.getUserByMail(mail);
+			if(u!=null) {
+				for(User user:currentUsers) {
+					if(user.getMail().equals(mail)) {
+						e.close();
+						mavCurrent=returnViewUser("Utente gia presente");
+						return "redirect:/"+vistaCorrente;
+
+					}
+				}
+				Appertain a =new Appertain();
+				Organization o= e.getOrganization(currentOrganization);
+				Role r= e.getRoleById(1);
+				a.setId(new AppertainId(u.getIduser(),o.getIdorganization()));
+				a.setRole(r);
+				a.setOrganization(o);
+				a.setUser(u);
+				u.getAppertains().add(a);
+				e.merge(u);
+				e.close();
+				mavCurrent=returnViewUser("Utente Inserito in "+ o.getName());
+				return "redirect:/"+vistaCorrente;
+			}else {
+				mavCurrent=returnViewUser("Nessun utente trovato con la mail inserita");
+				return "redirect:/"+vistaCorrente;
+			}
+
+
+		}
+
 	}
 
 	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
-
-		Entity e = new Entity();
-
-		List<Organization> o = e.getAllOrganizations();
-
-		ModelAndView map = new ModelAndView("organizationManager");
-		map.addObject("organizations", o);
-		vistaUserCorrente="allUserOrganization";
-		return map;
+		vistaCorrente="organizationManager";
+		if(flagOrg==true) {
+			mavCurrent=returnViewOrganization("");
+			flagOrg=false;
+		}
+		if(mavCurrent!=null || vistaCorrente.equals("organizatioManager")) {
+			return mavCurrent;
+		}else {
+			return new ModelAndView("login");
+		}
 	}
-	@RequestMapping("/ViewUsers")
-	public ModelAndView ViewUsers(@RequestParam("piva") String piva,HttpServletResponse response) {
-		vistaUserCorrente="allUserOrganization";
+	@RequestMapping("/viewUsersOrg")
+	public String ViewUsers(@RequestParam("piva") String piva,HttpServletResponse response) {
+		vistaCorrente="allUserOrganization";
 		Entity e = new Entity();
 		Organization o= e.getOrganization(piva);
 		currentOrganization=o.getPiva();		
 		currentUsers=null;
-
-
 		Set appertains = e.getOrganization(currentOrganization).getAppertains();
 		currentUsers= new LinkedList<User>();
 		for( Object a: appertains) {
 			currentUsers.add(((Appertain) a).getUser());			
-		}				
-		try {
-			response.sendRedirect(vistaUserCorrente);
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		}	
+		e.close();
+		mavCurrent=returnViewUser("");
+		return "redirect:/"+vistaCorrente;
+	}
+
+	@RequestMapping("/removeOrg")
+	public String removeOrg(@RequestParam("piva") String piva,HttpServletResponse response) {
+		vistaCorrente="organizationManager";
+		Entity e = new Entity();
+		Organization o=e.getOrganization(piva);
+		if(o!=null ) {
+			e.deleteAppertainByOrg(o.getIdorganization());
+			e.Delete(o);
+			e.close();
+			mavCurrent=returnViewOrganization("Organizzazione : "+o.getName()+" con P.Iva="+o.getPiva()+", rimossa con successo");
+
+			return "redirect:/"+vistaCorrente;
+		}else {
+			mavCurrent=returnViewOrganization("Error in remove");
+			return "redirect:/"+vistaCorrente;
+
 		}
-		ModelAndView map = new ModelAndView(vistaUserCorrente);
-		map.addObject("users", currentUsers);
-		map.addObject("organization", o.getName());
+	}
+	@RequestMapping("/remove")
+	public String remove(@RequestParam("mail") String mail,HttpServletResponse response) {
+		vistaCorrente="allUserOrganization";
+		Entity e = new Entity();
+		Organization o=e.getOrganization(currentOrganization);
+		User u=e.getUserByMail(mail);
+		if(o!=null && u!=null) {
+			e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
+			e.close();
+			mavCurrent=returnViewUser("Utente: "+mail+", rimosso con successo");
+
+			return "redirect:/"+vistaCorrente;
+		}else {
+			mavCurrent=returnViewUser("Error in remove");
+			return "redirect:/"+vistaCorrente;
+
+		}
 
 
-		return map;
+
+
 	}
 
 
-
 	@RequestMapping("/enable")
-	public ModelAndView enable(@RequestParam("mail") String mail,HttpServletResponse response) {
+	public String enable(@RequestParam("mail") String mail,HttpServletResponse response) {
 
 		Entity e = new Entity();
 		User user = e.getUserByMail(mail);
@@ -152,50 +310,34 @@ public class SpringController {
 			user.setEnable(true);
 		}
 
-		e.merge(user);
-		currentUsers=null;
-		currentUsers= new LinkedList<User>();
-		if(vistaUserCorrente.equals("allUser")) {
-		}else if(vistaUserCorrente.equals("allUserOrganization")) {
-			Set appertains = e.getOrganization(currentOrganization).getAppertains();
-			for( Object a: appertains) {
-				currentUsers.add(((Appertain) a).getUser());			
-			}
-
-		}
-		try {
-			response.sendRedirect(vistaUserCorrente);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}				
-		ModelAndView map = new ModelAndView(vistaUserCorrente);
-		map.addObject("users", currentUsers);
-
-		return map;
+		e.merge(user);	
+		e.close();
+		mavCurrent=returnViewUser("");
+		return "redirect:/"+vistaCorrente;
 	}
 
 
-
-
 	@RequestMapping("/allUser")
-	public ModelAndView handleRequest() {
+	public ModelAndView allUser() {
 		Entity e = new Entity();
 		ModelAndView map = new ModelAndView("allUser");
 		currentUsers=null;
 		currentUsers= new LinkedList<User>();
 		currentUsers.addAll(e.getAllUser());
 		map.addObject("users", currentUsers);
-		vistaUserCorrente="allUser";
+		vistaCorrente="allUser";
 		return map;
 
 	}
 	@RequestMapping("/allUserOrganization")
 	public ModelAndView allUserOrganization() {
-
-		ModelAndView map = new ModelAndView("allUserOrganization");
-		map.addObject("users", currentUsers);
-		vistaUserCorrente="allUserOrganization";
-		return map;
+		vistaCorrente="allUserOrganization";
+		flagOrg=true;
+		if(mavCurrent!=null && currentOrganization!=null) {
+			return mavCurrent;
+		}else {
+			return new ModelAndView("login");
+		}
 
 	}
 
@@ -271,7 +413,7 @@ public class SpringController {
 					String text=message + "/n "  + confirmationUrl;
 					new Utility().SendJavaMail("lucah2ialfino@gmail.com", "springmvc", recipientAddress, subject, text);
 				} catch (Exception me) {
-					logger.error("eventooooooooooooooooooooooooooooo",me);
+					logger.error("evento",me);
 					return new ModelAndView("login", "mail", "Errore invio mail");
 				}
 				mailTemp=null;
@@ -294,13 +436,9 @@ public class SpringController {
 		return new ModelAndView("pageMailSend","user","Ops! Pare che tu non abbia verificato il tuo account!");
 	}
 	@RequestMapping(value = "/samlListener", method = RequestMethod.POST)
-	public ModelAndView errorPage(HttpServletResponse response, 
+	public ModelAndView samlListener(HttpServletResponse response, 
 			HttpServletRequest request) throws IOException {
 
-		System.out.println("1"+request.getHeader("Content-type"));
-		System.out.println("2"+request.getContentType());
-
-		Enumeration parameterNames = request.getParameterNames();
 		String encoded=request.getParameter("SAMLResponse");
 
 		String decode=new Utility().Base64(encoded);
@@ -310,19 +448,29 @@ public class SpringController {
 		Entity e=new Entity();
 
 		User u=e.getUserByMail(userid); // se user id non è nel db.
+
 		if(u==null) {
 
 
 			String name = new Utility().getNameSaml(decode);
 			String surname = new Utility().getSurnameSaml(decode);
 			String password = new Utility().getPasswordSaml(decode);
+			if(name!=null && surname!=null && password!=null) {
+				u = new User(name,surname,userid,password);
+				e.Insert(u);	
+			}
+			if(u!=null) {
+				return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Ok!</h2><h2 style=\"color: white;\">Utente registrato!</h2>");
 
 
-			u = new User(name,surname,userid,password);
-			e.Insert(u);
+			}else
+				return new ModelAndView("samlListener","status", "Utente non presente nel DB");
 
 
-			return new ModelAndView("samlListener","status", "<br><br><br><br><br><h2 style=\"color: white;\">Ok!</h2><h2 style=\"color: white;\">Utente registrato!</h2>");
+
+
+
+
 		}
 		Authentication auth = new UsernamePasswordAuthenticationToken(u.getMail(), null,null);
 		SecurityContextHolder.getContext().setAuthentication(auth);
@@ -428,6 +576,34 @@ public class SpringController {
 		en.merge(user);
 		return new ModelAndView("login", "user", "ACCOUNT ATTIVATO. PUOI FARE LA LOGIN");
 	}
+
+	public ModelAndView returnViewUser(String message) {
+		ModelAndView map= new ModelAndView(vistaCorrente);
+		RefreshCurrentUsersOrg();
+		map.addObject("users", new Utility().ListToForm(currentUsers));
+		map.addObject("error",message);
+		return map;
+	}
+	public ModelAndView returnViewOrganization(String message) {
+		ModelAndView map= new ModelAndView(vistaCorrente);
+		Entity e = new Entity();
+		currentOrganizations=e.getAllOrganizations();
+		e.close();
+		map.addObject("organizations", new Utility().ListToFormOrg(currentOrganizations));
+		map.addObject("error",message);
+		return map;
+	}
+	public void RefreshCurrentUsersOrg(){
+		Entity e = new Entity();
+		currentUsers=null;
+		Set appertains = e.getOrganization(currentOrganization).getAppertains();
+		e.close();
+		currentUsers= new LinkedList<User>();
+		for( Object a: appertains) {
+			currentUsers.add(((Appertain) a).getUser());			
+		}
+	}
+
 
 
 

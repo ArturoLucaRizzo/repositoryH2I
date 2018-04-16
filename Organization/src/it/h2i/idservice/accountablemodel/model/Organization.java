@@ -85,7 +85,7 @@ public class Organization  implements java.io.Serializable {
 	public void setTypologies(Set<Typology> typologies) {
 		this.typologies = typologies;
 	}
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="organization")
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="organization")
 	public Set<Appertain> getAppertains() {
 		return this.appertains;
 	}

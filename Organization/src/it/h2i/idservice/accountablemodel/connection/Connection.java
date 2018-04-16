@@ -15,6 +15,10 @@ public class Connection {
 	public EntityManager getEntity() {
 		return em;
 	}
+	public void close() {
+		em.clear();
+		em.close();
+	}
 	
 	
 	

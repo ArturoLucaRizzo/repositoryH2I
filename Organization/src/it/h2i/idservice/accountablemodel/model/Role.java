@@ -58,7 +58,7 @@ public class Role  implements java.io.Serializable {
     public void setIdrole(Integer idrole) {
         this.idrole = idrole;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="role_idfunction")
     public Function getFunction() {
         return this.function;
@@ -76,7 +76,7 @@ public class Role  implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="role")
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="role")
     public Set<Appertain> getAppertains() {
         return this.appertains;
     }

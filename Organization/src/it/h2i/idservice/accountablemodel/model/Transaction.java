@@ -66,7 +66,7 @@ public class Transaction  implements java.io.Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="transaction")
+@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="transaction")
     public Set<Function> getFunctions() {
         return this.functions;
     }

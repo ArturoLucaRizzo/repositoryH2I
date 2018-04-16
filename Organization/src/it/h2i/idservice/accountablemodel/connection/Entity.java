@@ -35,7 +35,7 @@ public class Entity {
 		}else {
 			u=(User) l.get(0);
 		}
-		
+
 		return u;
 
 	}
@@ -51,16 +51,31 @@ public class Entity {
 		}else {
 			o=(Organization) l.get(0);
 		}
-		
+
 		return o;
 
 	}
-	
+
+	public void deleteAppertainByOrg(int idUser, int idOrg) {
+		EntityManager em=c.getEntity();
+
+		em.getTransaction().begin();
+		em.createQuery("delete Appertain Where appertain_idorganization='"+idOrg+"' AND appertain_iduser='"+idUser+"'").executeUpdate();
+		em.getTransaction().commit();		
+	}
+	public void deleteAppertainByOrg(int idOrg) {
+		EntityManager em=c.getEntity();
+
+		em.getTransaction().begin();
+		em.createQuery("delete Appertain Where appertain_idorganization='"+idOrg+"'").executeUpdate();
+		em.getTransaction().commit();		
+	}
+
 	public List<User> getAllUser() {
-	
+
 		EntityManager em=c.getEntity();
 		List l=em.createQuery("From User ").getResultList();
-		
+
 		if(l.isEmpty()) {
 			return null;
 		}else {
@@ -69,10 +84,10 @@ public class Entity {
 
 	}
 	public List<User> getAllUserOfOrganization(Organization organization) {
-		
+
 		EntityManager em=c.getEntity();
 		List l=em.createQuery("From Appertain a where a.appertain_idorganization='"+organization.getIdorganization()+"'").getResultList();
-		
+
 		if(l.isEmpty()) {
 			return null;
 		}else {
@@ -84,12 +99,12 @@ public class Entity {
 		}
 
 	}
-	
+
 	public List<Organization> getAllOrganizations() {
-		
+
 		EntityManager em=c.getEntity();
 		List l=em.createQuery("From Organization ").getResultList();
-		
+
 		if(l.isEmpty()) {
 			return null;
 		}else {
@@ -97,13 +112,13 @@ public class Entity {
 		}		
 
 	}
-	
+
 	public void setRole(Organization organization, User u, Role role) {
-		
-		
+
+
 	}
-	
-	
+
+
 
 
 	public Token getToken(String token) {
@@ -113,26 +128,35 @@ public class Entity {
 		EntityManager em=c.getEntity();
 		List l=em.createQuery("From Token t Where t.token='"+token+"'").getResultList();
 		Token to;
-		
+
 		if(l.isEmpty()) {
 			return null;
 		}else {
 			to=(Token) l.get(0);
 		}
-		
+
 		return to;
+
+	}
+	public Boolean Delete(Object o) {
+		EntityManager em=c.getEntity();
+		em.getTransaction().begin();
+		em.remove(o);
+		em.getTransaction().commit();
+		return true;
 
 	}
 	public Boolean DeleteToken(Token token) {
 		EntityManager em=c.getEntity();
 
-		  em.getTransaction().begin();
-		  em.remove(token);
-		  em.getTransaction().commit();
-		  return true;
-		
-		}
-	
+		em.getTransaction().begin();
+		em.remove(token);
+		em.getTransaction().commit();
+		return true;
+
+	}
+
+
 
 	public boolean ValidateRegistration(String mail) {
 		EntityManager em=c.getEntity();
@@ -143,14 +167,14 @@ public class Entity {
 	}
 
 
-	public boolean Insert(User u) {
+	public boolean Insert(Object u) {
 		EntityManager em=c.getEntity();
 		em.getTransaction().begin();
 		em.persist(u);
 		em.getTransaction().commit();
 		return true;	
 	}
-	public boolean merge(User u) {
+	public boolean merge(Object u) {
 		EntityManager em=c.getEntity();
 		em.getTransaction().begin();
 		em.merge(u);
@@ -165,6 +189,23 @@ public class Entity {
 		em.persist(token);
 		em.getTransaction().commit();
 		return true;	
+	}
+
+	public Role getRoleById(int idRole) {
+		EntityManager em=c.getEntity();
+		List l=em.createQuery("From Role r Where r.idrole='"+idRole+"'").getResultList();
+		Role r;
+		if(l.isEmpty()) {
+			return null;
+		}else {
+			r=(Role) l.get(0);
+		}
+
+		return r;
+
+	}
+	public void close() {
+		c.close();
 	}
 
 

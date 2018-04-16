@@ -50,7 +50,7 @@ public class Appertain  implements java.io.Serializable {
     public void setId(AppertainId id) {
         this.id = id;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="appertain_iduser", nullable=false, insertable=false, updatable=false)
     public User getUser() {
         return this.user;
@@ -59,7 +59,7 @@ public class Appertain  implements java.io.Serializable {
     public void setUser(User user) {
         this.user = user;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="appertain_idorganization", nullable=false, insertable=false, updatable=false)
     public Organization getOrganization() {
         return this.organization;
@@ -68,7 +68,7 @@ public class Appertain  implements java.io.Serializable {
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
-@ManyToOne(fetch=FetchType.LAZY)
+@ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="appertain_idrole", nullable=false)
     public Role getRole() {
         return this.role;

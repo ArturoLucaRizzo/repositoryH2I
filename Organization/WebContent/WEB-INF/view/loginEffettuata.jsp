@@ -45,7 +45,7 @@
 		<div class="container-login100"
 			style="background-image: url('images/bg-01.jpg');">
 			<div class="wrap-login100 p-t-30 p-b-50">
-				<span class="login100-form-title p-b-41"> Benvenuto:     ${a}</span>
+				<span class="login100-form-title p-b-41"> Benvenuto:  ${a}</span>
 				<div class="container-login100-form-btn m-t-32">
 					<a href="logout" class="login100-form-btn">Logout</a>
 				</div>
