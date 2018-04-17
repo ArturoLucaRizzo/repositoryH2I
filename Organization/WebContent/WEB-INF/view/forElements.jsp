@@ -5,7 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
+<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
@@ -27,26 +27,20 @@
 			<c:forEach var="u" items="${users}">
 				<tr>
 
-
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
-					<td class='name' name='name' style='color: white;'>${u.getName()}</td>
+					<td class='name' id="name" name='name' style='color: white;'>${u.getName()}</td>
 					<td class='surname' name='surname' style='color: white;'>${u.getSurname()}</td>
 					<td class='mail' id="email" name='mail' style='color: white;'>${u.getMail()}</td>
 					<td class='edit'><button class="edit-item-btn">Edit</button></td>
 
-				
-
-
-						<input type="hidden" name="mails" value="${u.getMail()}" />
-
-						<td>
-							<button name="rem">Remove</button>
-						</td>
+					<td>
+						<button class="btnOrg" name="rem">Remove</button>
+					</td>
 
 					<td style="color: blue;"><c:if test="${u.enable}">
-							<a href="enable?mail=${u.mail}" style="color: blue;">Disable</a>
+							<button class="btnOrgRed" name="enable">Disable</button>
 						</c:if> <c:if test="${not u.enable}">
-							<a href="enable?mail=${u.mail}" style="color: blue;">Enable</a>
+							<button class="btnOrg" name="enable">Enable</button>
 						</c:if></td>
 				</tr>
 			</c:forEach>

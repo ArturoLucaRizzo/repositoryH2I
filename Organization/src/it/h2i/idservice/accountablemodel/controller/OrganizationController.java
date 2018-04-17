@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import it.h2i.idservice.accountablemodel.DTO.RemoveDTO;
+import it.h2i.idservice.accountablemodel.DTO.ActionDTO;
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
 import it.h2i.idservice.accountablemodel.model.Appertain;
@@ -282,31 +282,30 @@ public class OrganizationController {
 
 	
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
-	public @ResponseBody RemoveDTO remove(@RequestBody RemoveDTO rs) {
+	public @ResponseBody ActionDTO remove(@RequestBody ActionDTO rs) {
 		vistaCorrente="allUserOrganization";
 		Entity e = new Entity();
-		System.out.println("SONO IN REMOVE " +rs.getParameter());
 		Organization o=e.getOrganization(currentOrganization);
 		User u=e.getUserByMail(rs.getParameter());
 		if(o!=null && u!=null) {
 			e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
 			e.close();
             RefreshCurrentUsersOrg();
-            return new RemoveDTO("ok",null);
+            return new ActionDTO("ok",null);
 		
 		}
-		return new RemoveDTO("not ok",null);
+		return new ActionDTO("not ok",null);
 		
 
 
 	}
 
 
-	@RequestMapping("/enable")
-	public String enable(@RequestParam("mail") String mail,HttpServletResponse response) {
+	@RequestMapping(value="/enable", method = RequestMethod.POST)
+	public @ResponseBody ActionDTO enable(@RequestBody ActionDTO rs) {
 
 		Entity e = new Entity();
-		User user = e.getUserByMail(mail);
+		User user = e.getUserByMail(rs.getParameter());
 
 		if (user.getEnable()) {
 			user.setEnable(false);
@@ -317,7 +316,7 @@ public class OrganizationController {
 		e.merge(user);	
 		e.close();
 		mavCurrent=returnViewUser("");
-		return "redirect:/"+vistaCorrente;
+        return new ActionDTO("ok",null);
 	}
 
 

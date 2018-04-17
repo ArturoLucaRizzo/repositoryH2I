@@ -1,13 +1,30 @@
 $(document).ready(function(){
+	var urls;
+	
 
 	$("button[name='rem']").click(function(event) {
 		// Prevent the form from submitting via the browser.
 		event.preventDefault();
-		ajaxPost();
+		if (window.confirm("vuoi eliminare "+ document.getElementById("name").textContent+" ?")) {
+			urls="delete"
+			ajaxPost();
+        }
+
 	});	
+	
+	$("button[name='enable']").click(function(event) {
+		// Prevent the form from submitting via the browser.
+		event.preventDefault();
+		if (window.confirm("vuoi abilitare/disabilitare "+ document.getElementById("name").textContent+" ?")) {
+			urls="enable"
+			ajaxPost();
+        }
+	});	
+	
+	
 	function ajaxPost(){
 
-		var removeRespone= {
+		var removeDTO= {
 				"success" : "true",
 				"parameter" : document.getElementById("email").textContent
 		}
@@ -16,13 +33,14 @@ $(document).ready(function(){
 			type: "POST",
 			contentType : 'application/json; charset=utf-8',
 			dataType : 'json',
-			url: "delete",
-			data: JSON.stringify(removeRespone), // Note it is important
+			url: urls,
+			data: JSON.stringify(removeDTO), // Note it is important
 			success :function(data) {
 			if(data.success=="ok"){
+				
 		        $("#box").load("forElements");
 			}else{
-				alert("errore generico nella remove")
+				alert("errore generico in ajax")
 			}
 			
 

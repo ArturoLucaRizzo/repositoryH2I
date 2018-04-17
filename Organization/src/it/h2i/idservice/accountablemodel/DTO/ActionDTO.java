@@ -1,16 +1,16 @@
 package it.h2i.idservice.accountablemodel.DTO;
 
-public class RemoveDTO {
+public class ActionDTO {
 
 	String success;
 	String parameter;
-	public RemoveDTO() {
+	public ActionDTO() {
 		
 
 		this.success = "1";
 	}
 
-	public RemoveDTO(String success,String Parameter) {
+	public ActionDTO(String success,String Parameter) {
 		super();
 		this.success = success;
 		this.parameter=parameter;
