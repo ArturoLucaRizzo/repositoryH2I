@@ -51,9 +51,8 @@
 	<div align="center" id="user">
 		<h1 style="color: white;">Users</h1>
 		<br> <br>
-		<div id="box">
 		
-		</div>
+			<div id="box"></div>
 		<br> <br> <br> <br>
 		<form action="addAndEdit" method="POST">
 			<div>

@@ -32,6 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import it.h2i.idservice.accountablemodel.DTO.RemoveDTO;
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
 import it.h2i.idservice.accountablemodel.model.Appertain;
@@ -82,10 +84,8 @@ public class SpringController {
 	@RequestMapping("/forElements")
 	public ModelAndView pageforElements(HttpServletRequest request,HttpServletResponse response, Model model) {
 		
-		Entity e=new Entity();
-		List <User> listaProva=e.getAllUser();
-		e.close();
-		return new ModelAndView("forElements","users",listaProva);
+	
+		return new ModelAndView("forElements","users",currentUsers);
 	}
 	
 
@@ -287,22 +287,24 @@ public class SpringController {
 
 		}
 	}
-	@RequestMapping("/remove")
-	public ModelAndView remove(@RequestParam("mail") String mail,HttpServletResponse response) {
+
+	
+	@RequestMapping(value="/delete", method = RequestMethod.POST)
+	public @ResponseBody RemoveDTO remove(@RequestBody RemoveDTO rs) {
 		vistaCorrente="allUserOrganization";
 		Entity e = new Entity();
+		System.out.println("SONO IN REMOVE " +rs.getParameter());
 		Organization o=e.getOrganization(currentOrganization);
-		User u=e.getUserByMail(mail);
+		User u=e.getUserByMail(rs.getParameter());
 		if(o!=null && u!=null) {
 			e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
 			e.close();
             RefreshCurrentUsersOrg();
-			return new ModelAndView("forElements","users",currentUsers);
+            return new RemoveDTO("ok",null);
 		
 		}
-		return new ModelAndView("forElements","users",currentUsers);
-
-
+		return new RemoveDTO("not ok",null);
+		
 
 
 	}
@@ -357,13 +359,13 @@ public class SpringController {
 		ModelAndView mav=new ModelAndView("loginEffettuata");
 		mav.addObject("a",auth.getName());
 		if(auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-	        System.out.println(" FUNZIONA");
+
 			mav.addObject("ManageOrganization","<div class=\"container-login100-form-btn m-t-32\">\r\n" + 
 					"\r\n" + 
 					"					<a href=\"organizationManager\" class=\"login100-form-btn\">ManagementORG</a>\r\n" + 
 					"				</div>");
 		}else {
-			System.out.println(" NON FUNZIONA");
+
 			return mav;
 		}
 		return mav;
