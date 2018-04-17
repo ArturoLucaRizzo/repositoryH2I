@@ -36,8 +36,11 @@
 <!--===============================================================================================-->
 </head>
 <link rel="stylesheet" type="text/css" href="css/list.css">
+
 <!--===============================================================================================-->
+
 </head>
+
 <body>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
@@ -48,26 +51,10 @@
 	<div align="center" id="user">
 		<h1 style="color: white;">Users</h1>
 		<br> <br>
-		<table style="width: 85%">
-			<thead>
-				<tr>
-					<th class="sort" data-sort="name"><h3
-							style='color: #69bcf0; font-weight: Bold'>Name</h3></th>
-					<th class="sort" data-sort="surname"><h3
-							style='color: #69bcf0; font-weight: Bold'>surname</h3></th>
-					<th class="sort" data-sort="mail"><h3
-							style='color: #69bcf0; font-weight: Bold'>mail</h3></th>
-					<th colspan="2"><input type="text" class="search"
-						placeholder="Search contact" /></th>
-				</tr>
-			</thead>
-			<tbody class="list">${users}
-			</tbody>
-		</table>
-		<br>
-		<br>
-		<br>
-		<br>
+		<div id="box">
+		
+		</div>
+		<br> <br> <br> <br>
 		<form action="addAndEdit" method="POST">
 			<div>
 				<table align="center">
@@ -99,9 +86,11 @@
 
 
 
+
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="js/list.js"></script>
+	<script src="js/forHelper.js"></script>
 
 	<script src="js/provalist.js"></script>
 </body>

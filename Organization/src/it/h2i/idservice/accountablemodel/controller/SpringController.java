@@ -75,6 +75,19 @@ public class SpringController {
 	public String index(HttpServletRequest request,HttpServletResponse response, Model model) {
 		return "login";
 	}
+	@RequestMapping("/testList")
+	public String indexs(HttpServletRequest request,HttpServletResponse response, Model model) {
+		return "testList";
+	}
+	@RequestMapping("/forElements")
+	public ModelAndView pageforElements(HttpServletRequest request,HttpServletResponse response, Model model) {
+		
+		Entity e=new Entity();
+		List <User> listaProva=e.getAllUser();
+		e.close();
+		return new ModelAndView("forElements","users",listaProva);
+	}
+	
 
 
 	@RequestMapping(value="/addAndEditOrg", method = RequestMethod.POST)
@@ -275,7 +288,7 @@ public class SpringController {
 		}
 	}
 	@RequestMapping("/remove")
-	public String remove(@RequestParam("mail") String mail,HttpServletResponse response) {
+	public ModelAndView remove(@RequestParam("mail") String mail,HttpServletResponse response) {
 		vistaCorrente="allUserOrganization";
 		Entity e = new Entity();
 		Organization o=e.getOrganization(currentOrganization);
@@ -283,14 +296,11 @@ public class SpringController {
 		if(o!=null && u!=null) {
 			e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
 			e.close();
-			mavCurrent=returnViewUser("Utente: "+mail+", rimosso con successo");
-
-			return "redirect:/"+vistaCorrente;
-		}else {
-			mavCurrent=returnViewUser("Error in remove");
-			return "redirect:/"+vistaCorrente;
-
+            RefreshCurrentUsersOrg();
+			return new ModelAndView("forElements","users",currentUsers);
+		
 		}
+		return new ModelAndView("forElements","users",currentUsers);
 
 
 

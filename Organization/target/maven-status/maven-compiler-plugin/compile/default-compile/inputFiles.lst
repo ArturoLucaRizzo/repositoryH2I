@@ -10,7 +10,6 @@
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/controller/SpringController.java
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/security/AppConfig.java
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/model/Organization.java
-/home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/security/SAMLUserDetailsServiceImpl.java
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/model/AppertainId.java
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/security/MyUserDetailsService.java
 /home/luca/git/repositoryH2I/Organization/src/it/h2i/idservice/accountablemodel/model/Transaction.java
