@@ -2,6 +2,8 @@ package it.h2i.idservice.accountablemodel.model;
 // Generated 4-apr-2018 17.24.09 by Hibernate Tools 3.2.2.GA
 
 
+import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -27,8 +29,12 @@ public class Appertain  implements java.io.Serializable {
      private User user;
      private Organization organization;
      private Role role;
+   
 
-    public Appertain() {
+
+
+	public Appertain() {
+	
     }
 
     public Appertain(AppertainId id, User user, Organization organization, Role role) {
@@ -36,6 +42,7 @@ public class Appertain  implements java.io.Serializable {
        this.user = user;
        this.organization = organization;
        this.role = role;
+       
     }
    
      @EmbeddedId
@@ -77,6 +84,8 @@ public class Appertain  implements java.io.Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    
 
 
 

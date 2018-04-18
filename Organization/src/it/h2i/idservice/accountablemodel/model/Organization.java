@@ -2,7 +2,10 @@ package it.h2i.idservice.accountablemodel.model;
 // Generated 4-apr-2018 17.24.09 by Hibernate Tools 3.2.2.GA
 
 
+import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +35,7 @@ public class Organization  implements java.io.Serializable {
 	private String piva;
 	private String name;
 	private Set<Typology> typologies = new HashSet<Typology>(0);
-	private Set<Appertain> appertains = new HashSet<Appertain>(0);
+	private List<Appertain> appertains = new LinkedList();
 
 	public Organization() {
 	}
@@ -42,12 +45,14 @@ public class Organization  implements java.io.Serializable {
 		this.piva = piva;
 		this.name = name;
 	}
-	public Organization(String piva, String name, Set<Typology> typologies, Set<Appertain> appertains) {
+	public Organization(String piva, String name, Set<Typology> typologies, List<Appertain> appertains) {
 		this.piva = piva;
 		this.name = name;
 		this.typologies = typologies;
 		this.appertains = appertains;
+	
 	}
+
 
 	@Id @GeneratedValue(strategy=IDENTITY)
 
@@ -86,13 +91,16 @@ public class Organization  implements java.io.Serializable {
 		this.typologies = typologies;
 	}
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="organization")
-	public Set<Appertain> getAppertains() {
+	public List<Appertain> getAppertains() {
 		return this.appertains;
 	}
 
-	public void setAppertains(Set<Appertain> appertains) {
+	public void setAppertains(List<Appertain> appertains) {
 		this.appertains = appertains;
 	}
+	
+	
+
 
 
 

@@ -10,7 +10,7 @@ public class ActionDTO {
 		this.success = "1";
 	}
 
-	public ActionDTO(String success,String Parameter) {
+	public ActionDTO(String success,String parameter) {
 		super();
 		this.success = success;
 		this.parameter=parameter;

@@ -12,45 +12,76 @@
 	<table style="width: 85%">
 		<thead>
 			<tr>
-				<th class="sort" data-sort="name"><h3
-						style='color: #69bcf0; font-weight: Bold'>Name</h3></th>
-				<th class="sort" data-sort="surname"><h3
-						style='color: #69bcf0; font-weight: Bold'>surname</h3></th>
-				<th class="sort" data-sort="mail"><h3
-						style='color: #69bcf0; font-weight: Bold'>mail</h3></th>
+				<th><h3 style='color: #69bcf0; font-weight: Bold'>Name</h3></th>
+				<th><h3 style='color: #69bcf0; font-weight: Bold'>surname</h3></th>
+				<th><h3 style='color: #69bcf0; font-weight: Bold'>mail</h3></th>
 				<th colspan="2"><input type="text" class="search"
 					placeholder="Search contact" /></th>
 			</tr>
 		</thead>
 		<tbody class="list">
+			<c:set var="i" scope="session" value="${0}" />
 
 			<c:forEach var="u" items="${users}">
+			    <c:set var="i" scope="session" value="${i + 1}" />
+				<div type="hidden" id="var"><c:out value="${i}"/></div>
+
+
 				<tr>
 
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
-					<td class='name' id="name" name='name' style='color: white;'>${u.getName()}</td>
-					<td class='surname' name='surname' style='color: white;'>${u.getSurname()}</td>
-					<td class='mail' id="email" name='mail' style='color: white;'>${u.getMail()}</td>
+					<td class='name' id="name<c:out value="${i}"/>" name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
+					<td class='surname' name='surname<c:out value="${i}"/>' style='color: white;'>${u.getSurname()}</td>
+					<td class='mail' id="email<c:out value="${i}"/>" name='mail<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
 					<td class='edit'><button class="edit-item-btn">Edit</button></td>
 
 					<td>
-						<button class="btnOrg" name="rem">Remove</button>
+						<button class="btnOrg" id="remove<c:out value="${i}"/>" name="rem">Remove</button>
 					</td>
 
 					<td style="color: blue;"><c:if test="${u.enable}">
-							<button class="btnOrgRed" name="enable">Disable</button>
+							<button class="btnOrgRed" id="enable<c:out value="${i}"/>" name="enable">Disable</button>
 						</c:if> <c:if test="${not u.enable}">
-							<button class="btnOrg" name="enable">Enable</button>
+							<button class="btnOrg" id="enable<c:out value="${i}"/>" name="enable">Enable</button>
 						</c:if></td>
 				</tr>
+
 			</c:forEach>
+
 
 
 		</tbody>
 	</table>
+	<form action="addAndEdit" method="POST">
+		<div>
+			<table align="center">
+				<td class="name"><input type="hidden" name="idfield"
+					id="id-field" /> <input type="text" id="name-field"
+					name="namefield" placeholder="Name" /></td>
+				<td class="surname"><input type="text" name="surnamefield"
+					id="surname-field" placeholder="surname" /></td>
+				<td class="mail"><input type="text" name="mailfield"
+					id="mail-field" placeholder="mail" /></td>
+
+				<td class="add">
+
+					<button class="edit-item-btn" id="add-btn" name="adds" value="true">Add</button>
+					<button class="edit-item-btn" id="edit-btn" name="editfield"
+						value="true">Edit</button>
+				</td>
+			</table>
+		</div>
+		</div>
+	</form>
+	<div align="left" margin-left="-15%">
+		<button class="btnOrg" name="return">Back</button>
+	</div>
+
 
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="js/list.js"></script>
 
 	<script src="js/provalist.js"></script>

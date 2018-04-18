@@ -75,11 +75,24 @@ public class OrganizationController {
 
 	@RequestMapping("/forElements")
 	public ModelAndView pageforElements(HttpServletRequest request,HttpServletResponse response, Model model) {
-		
-	
+
+         RefreshCurrentUsersOrg();
 		return new ModelAndView("forElements","users",currentUsers);
 	}
-	
+	@RequestMapping("/forElementsOrganizations")
+	public ModelAndView pageforElementsOrganizations(HttpServletRequest request,HttpServletResponse response, Model model) {
+		Entity e=new Entity();
+		currentOrganizations=e.getAllOrganizations();
+		e.close();
+		if(currentOrganizations!=null) {
+		     System.out.println("ci sono: " +currentOrganizations.size());
+			
+		}else
+			System.out.println("perchè è null?");
+  
+		return new ModelAndView("forElementsOrganizations","organizations",currentOrganizations);
+	}
+
 
 
 	@RequestMapping(value="/addAndEditOrg", method = RequestMethod.POST)
@@ -235,15 +248,8 @@ public class OrganizationController {
 	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
 		vistaCorrente="organizationManager";
-		if(flagOrg==true) {
-			mavCurrent=returnViewOrganization("");
-			flagOrg=false;
-		}
-		if(mavCurrent!=null || vistaCorrente.equals("organizatioManager")) {
-			return mavCurrent;
-		}else {
-			return new ModelAndView("login");
-		}
+	
+		return returnViewOrganization(null);
 	}
 	@RequestMapping("/viewUsersOrg")
 	public String ViewUsers(@RequestParam("piva") String piva,HttpServletResponse response) {
@@ -252,7 +258,7 @@ public class OrganizationController {
 		Organization o= e.getOrganization(piva);
 		currentOrganization=o.getPiva();		
 		currentUsers=null;
-		Set appertains = e.getOrganization(currentOrganization).getAppertains();
+		List appertains = e.getOrganization(currentOrganization).getAppertains();
 		currentUsers= new LinkedList<User>();
 		for( Object a: appertains) {
 			currentUsers.add(((Appertain) a).getUser());			
@@ -262,47 +268,67 @@ public class OrganizationController {
 		return "redirect:/"+vistaCorrente;
 	}
 
-	@RequestMapping("/removeOrg")
-	public String removeOrg(@RequestParam("piva") String piva,HttpServletResponse response) {
-		vistaCorrente="organizationManager";
-		Entity e = new Entity();
-		Organization o=e.getOrganization(piva);
-		if(o!=null ) {
-			e.deleteAppertainByOrg(o.getIdorganization());
-			e.Delete(o);
-			e.close();
-			mavCurrent=returnViewOrganization("Organizzazione : "+o.getName()+" con P.Iva="+o.getPiva()+", rimossa con successo");
-			return "redirect:/"+vistaCorrente;
-		}else {
-			mavCurrent=returnViewOrganization("Error in remove");
-			return "redirect:/"+vistaCorrente;
 
-		}
-	}
-
-	
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
-	public @ResponseBody ActionDTO remove(@RequestBody ActionDTO rs) {
+	public @ResponseBody ActionDTO Remove(@RequestBody ActionDTO rs) {
 		vistaCorrente="allUserOrganization";
-		Entity e = new Entity();
-		Organization o=e.getOrganization(currentOrganization);
-		User u=e.getUserByMail(rs.getParameter());
-		if(o!=null && u!=null) {
-			e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
-			e.close();
-            RefreshCurrentUsersOrg();
-            return new ActionDTO("ok",null);
-		
+		if(rs.getParameter()!=null) {
+			Entity e = new Entity();
+			if(new Utility().isValidEmailAddress((rs.getParameter()))) {
+				Organization o=e.getOrganization(currentOrganization);
+				User u=e.getUserByMail(rs.getParameter());
+				if(o!=null && u!=null) {
+					try {
+						e.deleteAppertainByOrg(u.getIduser(),o.getIdorganization());
+						e.close();
+						RefreshCurrentUsersOrg();
+						return new ActionDTO("ok","user");
+					}catch(Exception ex) {
+						e.close();
+						return new ActionDTO("not ok","user");
+					}
+
+				}else {
+					return new ActionDTO("not ok","user");
+				}
+
+			}else {
+				Organization o=e.getOrganization(rs.getParameter());
+				if(o!=null ) {
+					try {
+
+						e.deleteAppertainByOrg(o.getIdorganization());
+						e.Delete(o);
+						currentOrganizations=e.getAllOrganizations();
+						e.close();
+						return new ActionDTO("ok","organization");
+					}catch(Exception ex){
+						e.close();
+						return new ActionDTO("not ok","organization");
+
+					}
+
+				}else {
+					return new ActionDTO("not ok","organization");
+				}
+
+			}
+		}else {
+			return new ActionDTO("not ok","organization");
 		}
-		return new ActionDTO("not ok",null);
-		
-
-
 	}
 
+	@RequestMapping(value="/view", method = RequestMethod.POST)
+	public @ResponseBody ActionDTO View(@RequestBody ActionDTO rs) {
 
+		Entity e = new Entity();
+		currentOrganization= rs.getParameter();
+
+		return new ActionDTO("ok","view");
+	}
+	
 	@RequestMapping(value="/enable", method = RequestMethod.POST)
-	public @ResponseBody ActionDTO enable(@RequestBody ActionDTO rs) {
+	public @ResponseBody ActionDTO Enable(@RequestBody ActionDTO rs) {
 
 		Entity e = new Entity();
 		User user = e.getUserByMail(rs.getParameter());
@@ -316,7 +342,7 @@ public class OrganizationController {
 		e.merge(user);	
 		e.close();
 		mavCurrent=returnViewUser("");
-        return new ActionDTO("ok",null);
+		return new ActionDTO("ok","enable");
 	}
 
 
@@ -349,8 +375,6 @@ public class OrganizationController {
 	public ModelAndView returnViewUser(String message) {
 		ModelAndView map= new ModelAndView(vistaCorrente);
 		RefreshCurrentUsersOrg();
-		map.addObject("users", new Utility().ListToForm(currentUsers));
-		map.addObject("error",message);
 		return map;
 	}
 	public ModelAndView returnViewOrganization(String message) {
@@ -358,19 +382,21 @@ public class OrganizationController {
 		Entity e = new Entity();
 		currentOrganizations=e.getAllOrganizations();
 		e.close();
-		map.addObject("organizations", new Utility().ListToFormOrg(currentOrganizations));
-		map.addObject("error",message);
 		return map;
 	}
 	public void RefreshCurrentUsersOrg(){
 		Entity e = new Entity();
 		currentUsers=null;
-		Set appertains = e.getOrganization(currentOrganization).getAppertains();
+		List appertains = e.getOrganization(currentOrganization).getAppertains();
 		e.close();
 		currentUsers= new LinkedList<User>();
 		for( Object a: appertains) {
 			currentUsers.add(((Appertain) a).getUser());			
 		}
+		
+	
+		
+
 	}
 
 
