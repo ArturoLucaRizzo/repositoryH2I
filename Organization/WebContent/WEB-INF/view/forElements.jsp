@@ -23,16 +23,21 @@
 			<c:set var="i" scope="session" value="${0}" />
 
 			<c:forEach var="u" items="${users}">
-			    <c:set var="i" scope="session" value="${i + 1}" />
-				<div type="hidden" id="var"><c:out value="${i}"/></div>
+				<c:set var="i" scope="session" value="${i + 1}" />
+				<div type="hidden" id="var">
+					<c:out value="${i}" />
+				</div>
 
 
 				<tr>
 
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
-					<td class='name' id="name<c:out value="${i}"/>" name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
-					<td class='surname' name='surname<c:out value="${i}"/>' style='color: white;'>${u.getSurname()}</td>
-					<td class='mail' id="email<c:out value="${i}"/>" name='mail<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
+					<td class='name' id="name<c:out value="${i}"/>"
+						name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
+					<td class='surname' name='surname<c:out value="${i}"/>'
+						style='color: white;'>${u.getSurname()}</td>
+					<td class='mail' id="email<c:out value="${i}"/>"
+						name='mail<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
 					<td class='edit'><button class="edit-item-btn">Edit</button></td>
 
 					<td>
@@ -40,9 +45,11 @@
 					</td>
 
 					<td style="color: blue;"><c:if test="${u.enable}">
-							<button class="btnOrgRed" id="enable<c:out value="${i}"/>" name="enable">Disable</button>
+							<button class="btnOrgRed" id="enable<c:out value="${i}"/>"
+								name="enable">Disable</button>
 						</c:if> <c:if test="${not u.enable}">
-							<button class="btnOrg" id="enable<c:out value="${i}"/>" name="enable">Enable</button>
+							<button class="btnOrg" id="enable<c:out value="${i}"/>"
+								name="enable">Enable</button>
 						</c:if></td>
 				</tr>
 
@@ -52,27 +59,58 @@
 
 		</tbody>
 	</table>
-	<form action="addAndEdit" method="POST">
-		<div>
-			<table align="center">
-				<td class="name"><input type="hidden" name="idfield"
-					id="id-field" /> <input type="text" id="name-field"
-					name="namefield" placeholder="Name" /></td>
-				<td class="surname"><input type="text" name="surnamefield"
-					id="surname-field" placeholder="surname" /></td>
-				<td class="mail"><input type="text" name="mailfield"
-					id="mail-field" placeholder="mail" /></td>
+	<br>
 
-				<td class="add">
+	<div>
+		<table align="center">
+			<td class="name"><input type="hidden" name="idfield"
+				id="id-field" /> <input type="text" id="name-field"
+				name="namefield" placeholder="Name" /></td>
+			<td class="surname"><input type="text" name="surnamefield"
+				id="surname-field" placeholder="surname" /></td>
+			<td class="mail"><input type="text" name="mailfield"
+				id="mail-field" placeholder="mail" /></td>
 
-					<button class="edit-item-btn" id="add-btn" name="adds" value="true">Add</button>
-					<button class="edit-item-btn" id="edit-btn" name="editfield"
-						value="true">Edit</button>
-				</td>
-			</table>
+			<td>
+
+
+
+				<button class="btnOrg" id="add-btn" name="addbutton" value="true"
+					data-toggle="modal" data-target="#myModal">Add</button>
+				<button class="edit-item-btn" id="edit-btn" name="editfield"
+					value="true">Edit</button>
+			</td>
+		</table>
+	</div>
+
+
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Modal Header</h4>
+				</div>
+				<div class="modal-body" id="boxModel">
+				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
 		</div>
-		</div>
-	</form>
+	</div>
+
+
+
+
+
+
+
+
 	<div align="left" margin-left="-15%">
 		<button class="btnOrg" name="return">Back</button>
 	</div>
@@ -86,7 +124,5 @@
 
 	<script src="js/provalist.js"></script>
 	<script src="js/JSonReader.js"></script>
-
-
 </body>
 </html>

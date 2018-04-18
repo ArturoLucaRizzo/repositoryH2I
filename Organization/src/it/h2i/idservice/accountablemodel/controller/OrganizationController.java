@@ -79,6 +79,12 @@ public class OrganizationController {
          RefreshCurrentUsersOrg();
 		return new ModelAndView("forElements","users",currentUsers);
 	}
+	
+	@RequestMapping("/forUsers")
+	public ModelAndView pageforListUsers(HttpServletRequest request,HttpServletResponse response, Model model) {
+
+		return new ModelAndView("forUsers","users",currentUsers);
+	}
 	@RequestMapping("/forElementsOrganizations")
 	public ModelAndView pageforElementsOrganizations(HttpServletRequest request,HttpServletResponse response, Model model) {
 		Entity e=new Entity();

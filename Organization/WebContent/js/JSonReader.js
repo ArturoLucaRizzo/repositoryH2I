@@ -1,7 +1,14 @@
 $(document).ready(function(){
 	var urls;
 	var number;
+	
+	
+	$("button[name='addbutton']").click(function(event) {
+		
+		document.getElementById('boxModel').innerHTML ="organizzazione rimossa com successo";
+		$("#boxModel").load("forUsers");
 
+	});
 
 	$("button[name='rem']").click(function(event) {
 		number=event.target.id;
@@ -76,7 +83,7 @@ $(document).ready(function(){
 					if(data.parameter=="organization"){
 						$("#box").load("forElementsOrganizations");
 						if(urls=="delete"){
-							document.getElementById('message').innerHTML ="organizzazione rimossa";
+							document.getElementById('message').innerHTML ="organizzazione rimossa com successo";
 							$('#myModal').modal('show');
 						}
 					}

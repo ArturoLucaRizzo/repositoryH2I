@@ -25,22 +25,28 @@
 			<c:set var="i" scope="session" value="${0}" />
 			<c:forEach var="o" items="${organizations}">
 				<c:set var="i" scope="session" value="${i + 1}" />
-				<div type="hidden" id="var"><c:out value="${i}" /></div>
+				<div type="hidden" id="var">
+					<c:out value="${i}" />
+				</div>
 				<tr>
 
 					<td class='id' style='color: white' id="idorganizations"
 						name="idorganizations">${o.getIdorganization()}</td>
-					<td class='organization' id="name<c:out value="${i}" />" name='organization<c:out value="${i}" />'
-						style='color: white;'>${o.getName()}</td>
-					<td class='piva' name='piva<c:out value="${i}" />' id="piva<c:out value="${i}" />" style='color: white;'>${o.getPiva()}</td>
-					<td class='users' id="users<c:out value="${i}" />" name='users' style='color: white;'>${o.getAppertains().size()}</td>
+					<td class='organization' id="name<c:out value="${i}" />"
+						name='organization<c:out value="${i}" />' style='color: white;'>${o.getName()}</td>
+					<td class='piva' name='piva<c:out value="${i}" />'
+						id="piva<c:out value="${i}" />" style='color: white;'>${o.getPiva()}</td>
+					<td class='users' id="users<c:out value="${i}" />" name='users'
+						style='color: white;'>${o.getAppertains().size()}</td>
 					<td class='edit'><button class="edit-item-btn">Edit</button></td>
 
-						<td>
+
+					<td>
 						<button class="btnOrg" id="remove<c:out value="${i}"/>" name="rem">Remove</button>
 					</td>
 
-					<td><button class="btnOrg" id="viewUser<c:out value="${i}"/>" name="viewUser">View</button></td>
+					<td><button class="btnOrg" id="viewUser<c:out value="${i}"/>"
+							name="viewUser">View</button></td>
 
 
 				</tr>
@@ -49,29 +55,45 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<form action="addAndEditOrg" method="POST">
-		<div>
-			<table align="center">
-				<td class="organization"><input type="hidden" name="idfield"
-					id="id-field" placeholder="ID" /><input type="text"
-					id="organization-field" name="organizationfield"
-					placeholder="Organization" /></td>
-				<td class="piva"><input type="text" name="pivafield"
-					id="piva-field" placeholder="P.iva" /></td>
-				<td class="add">
-					<button class="edit-item-btn" id="add-btn" name="adds" value="true">Add</button>
-					<button class="edit-item-btn" id="edit-btn" name="editfield"
-						value="true">Edit</button>
-				</td>
-			</table>
-		</div>
-		</div>
-		<div align="center">
-			<h3 style='color: red;'>${error}</h3>
-		</div>
-	</form>
+
+	<div>
+		<table align="center">
+			<td class="organization"><input type="hidden" name="idfield"
+				id="id-field" placeholder="ID" /><input type="text"
+				id="organization-field" name="organizationfield"
+				placeholder="Organization" /></td>
+			<td class="piva"><input type="text" name="pivafield"
+				id="piva-field" placeholder="P.iva" /></td>
+			<td>
 
 
+
+				<button class="btnOrg" id="add-btn" name="addbutton" value="true"
+					data-toggle="modal" data-target="#myModal">Add</button>
+				<button class="edit-item-btn" id="edit-btn" name="editfield"
+					value="true">Edit</button>
+			</td>
+		</table>
+	</div>
+
+
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Modal Header</h4>
+				</div>
+				<div class="modal-body" id="boxModel"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
