@@ -68,7 +68,7 @@
 				name="namefield" placeholder="Name" /></td>
 			<td class="surname"><input type="text" name="surnamefield"
 				id="surname-field" placeholder="surname" /></td>
-			<td class="mail"><input type="text" name="mailfield"
+			<td class="mail"><input type="hidden" name="mailfield"
 				id="mail-field" placeholder="mail" /></td>
 
 			<td>
@@ -91,12 +91,13 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Modal Header</h4>
+					<h4 class="modal-title">List Users</h4>
 				</div>
 				<div class="modal-body" id="boxModel">
 				
 				</div>
 				<div class="modal-footer">
+				<button type="button" class="btn btn-default" name="addUser" >Add</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>

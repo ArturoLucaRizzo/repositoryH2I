@@ -1,6 +1,7 @@
 $(document).ready(function(){
 	var urls;
 	var number;
+	var mail;
 	
 	
 	$("button[name='addbutton']").click(function(event) {
@@ -9,6 +10,22 @@ $(document).ready(function(){
 		$("#boxModel").load("forUsers");
 
 	});
+	
+	
+	$("button[name='addUser']").click(function(event) {
+		 mail = $('#us option:selected').text();
+		if (window.confirm("vuoi aggiungere : "+ mail)) {
+			urls="addAndEdit"
+				ajaxPost2();
+		}
+		
+		
+
+	});
+	
+	
+	
+	
 
 	$("button[name='rem']").click(function(event) {
 		number=event.target.id;
@@ -44,6 +61,42 @@ $(document).ready(function(){
 			ajaxPost();
 		
 	});
+	
+	
+	function ajaxPost2(){
+		var ActiveDTO;
+			ActiveDTO= {
+					"success" : "true",
+					"parameter" : mail
+
+
+			}
+
+		$.ajax({
+			type: "POST",
+			contentType : 'application/json; charset=utf-8',
+			dataType : 'json',
+			url: urls,
+			data: JSON.stringify(ActiveDTO), // Note it is important
+			success :function(data) {
+				if(data.success=="ok"){
+					if(data.parameter=="add"){
+						
+						$("#box").load("forElements");
+
+					}
+
+
+
+				}
+				else{
+					alert("errore generico in ajax");
+
+
+				}
+			}
+		});
+	}
 
 	function ajaxPost(){
 		var ActiveDTO;

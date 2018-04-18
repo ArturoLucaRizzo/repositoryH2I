@@ -83,7 +83,29 @@ public class OrganizationController {
 	@RequestMapping("/forUsers")
 	public ModelAndView pageforListUsers(HttpServletRequest request,HttpServletResponse response, Model model) {
 
-		return new ModelAndView("forUsers","users",currentUsers);
+		
+		Entity e = new Entity();
+		List<User> users = e.getAllUser();
+		e.close();
+		List<User> us = new ArrayList();
+		boolean userPresent;
+		for (int i = 0; i < users.size(); i++) {
+			userPresent = false;
+			for (int j = 0; j < currentUsers.size(); j++) {
+				if (users.get(i).getMail().equals(currentUsers.get(j).getMail())) {
+					userPresent = true;
+				}
+			}
+
+			if (!userPresent) {
+				us.add(users.get(i));
+			}
+
+		}
+
+		return new ModelAndView("forUsers", "users", us);
+			
+	
 	}
 	@RequestMapping("/forElementsOrganizations")
 	public ModelAndView pageforElementsOrganizations(HttpServletRequest request,HttpServletResponse response, Model model) {
@@ -175,17 +197,21 @@ public class OrganizationController {
 		}
 
 	}
+	
+	
+	
+	
 	@RequestMapping(value="/addAndEdit", method = RequestMethod.POST)
-	public String addeditButton(HttpServletRequest request,
-			HttpServletResponse response) {
+	public @ResponseBody ActionDTO addEditButton(@RequestBody ActionDTO rs) {
 		vistaCorrente="allUserOrganization";
 
-		String mail=request.getParameter("mailfield");
+		String mail=rs.getParameter();
 		Entity e = new Entity();
 		if(mail==null || !new Utility().isValidEmailAddress(mail)) {
 			mavCurrent=returnViewUser("Mail Errata");
-			return "redirect:/"+vistaCorrente;
-		}else if(request.getParameter("editfield")!=null) {//edit button della view
+			return new ActionDTO("not ok",null);
+		}
+		/*}else if(request.getParameter("editfield")!=null) {//edit button della view
 			String name=request.getParameter("namefield");
 			String surname=request.getParameter("surnamefield");
 			User u=null;
@@ -217,15 +243,15 @@ public class OrganizationController {
 
 			}
 
-		}else {
+		}else {*/
 			//add button della view 
 			User u= e.getUserByMail(mail);
 			if(u!=null) {
 				for(User user:currentUsers) {
 					if(user.getMail().equals(mail)) {
 						e.close();
-						mavCurrent=returnViewUser("Utente gia presente");
-						return "redirect:/"+vistaCorrente;
+
+						return new ActionDTO("not ok",null);
 
 					}
 				}
@@ -239,39 +265,21 @@ public class OrganizationController {
 				u.getAppertains().add(a);
 				e.merge(u);
 				e.close();
-				mavCurrent=returnViewUser("Utente Inserito in "+ o.getName());
-				return "redirect:/"+vistaCorrente;
+				return new ActionDTO("ok","add");
 			}else {
-				mavCurrent=returnViewUser("Nessun utente trovato con la mail inserita");
-				return "redirect:/"+vistaCorrente;
+				return new ActionDTO("not ok",null);
 			}
 
 
 		}
 
-	}
+	
 
 	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
 		vistaCorrente="organizationManager";
 	
 		return returnViewOrganization(null);
-	}
-	@RequestMapping("/viewUsersOrg")
-	public String ViewUsers(@RequestParam("piva") String piva,HttpServletResponse response) {
-		vistaCorrente="allUserOrganization";
-		Entity e = new Entity();
-		Organization o= e.getOrganization(piva);
-		currentOrganization=o.getPiva();		
-		currentUsers=null;
-		List appertains = e.getOrganization(currentOrganization).getAppertains();
-		currentUsers= new LinkedList<User>();
-		for( Object a: appertains) {
-			currentUsers.add(((Appertain) a).getUser());			
-		}	
-		e.close();
-		mavCurrent=returnViewUser("");
-		return "redirect:/"+vistaCorrente;
 	}
 
 
