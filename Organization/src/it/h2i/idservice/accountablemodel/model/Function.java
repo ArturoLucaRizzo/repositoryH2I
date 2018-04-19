@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -60,8 +61,7 @@ public class Function  implements java.io.Serializable {
     public void setIdfunction(Integer idfunction) {
         this.idfunction = idfunction;
     }
-@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="function_idtransaction")
+    @OneToOne(mappedBy = "function", cascade = CascadeType.ALL)
     public Transaction getTransaction() {
         return this.transaction;
     }

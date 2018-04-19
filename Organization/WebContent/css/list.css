@@ -32,6 +32,33 @@ table td, table th {
   background-image: linear-gradient(to bottom, #3cb0fd, #000000);
   text-decoration: none;
 }
+.edit-item-btnred {
+  background: #ff0000;
+  background-image: -webkit-linear-gradient(top, #ff0000, #bf0000);
+  background-image: -moz-linear-gradient(top, #ff0000, #bf0000);
+  background-image: -ms-linear-gradient(top, #ff0000, #bf0000);
+  background-image: -o-linear-gradient(top, #ff0000, #bf0000);
+  background-image: linear-gradient(to bottom, #ff0000, #bf0000);
+  -webkit-border-radius: 24;
+  -moz-border-radius: 24;
+  border-radius: 24px;
+  text-shadow: 1px 1px 9px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 18px;
+  padding: 6px 14px 6px 16px;
+  text-decoration: none;
+}
+
+.edit-item-btnred:hover {
+  background: #bf0000;
+  background-image: -webkit-linear-gradient(top, #bf0000, #ff0000);
+  background-image: -moz-linear-gradient(top, #bf0000, #ff0000);
+  background-image: -ms-linear-gradient(top, #bf0000, #ff0000);
+  background-image: -o-linear-gradient(top, #bf0000, #ff0000);
+  background-image: linear-gradient(to bottom, #bf0000, #ff0000);
+  text-decoration: none;
+}
 .remove-item-btn {
   background: #8a8a8a;
   background-image: -webkit-linear-gradient(top, #8a8a8a, #7a7a7a);

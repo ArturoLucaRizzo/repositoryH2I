@@ -30,15 +30,25 @@
 				</div>
 				<tr>
 
-					<td class='id' style='color: white' id="idorganizations"
-						name="idorganizations">${o.getIdorganization()}</td>
+					<td class='id' style='color: white'
+						id="idorganizations<c:out value="${i}" />" name="idorganizations">${o.getIdorganization()}</td>
+
 					<td class='organization' id="name<c:out value="${i}" />"
 						name='organization<c:out value="${i}" />' style='color: white;'>${o.getName()}</td>
+
 					<td class='piva' name='piva<c:out value="${i}" />'
 						id="piva<c:out value="${i}" />" style='color: white;'>${o.getPiva()}</td>
+
 					<td class='users' id="users<c:out value="${i}" />" name='users'
 						style='color: white;'>${o.getAppertains().size()}</td>
-					<td class='edit'><button class="edit-item-btn">Edit</button></td>
+
+					<td class='edit'>
+						<button id="edit<c:out value="${i}" />" name="editListbtn"
+							class="edit-item-btn">Edit</button>
+						<button id="back<c:out value="${i}" />" name="backListbtn"
+							class="edit-item-btnred">back</button>
+
+					</td>
 
 
 					<td>
@@ -58,8 +68,9 @@
 
 	<div>
 		<table align="center">
-			<td class="organization"><input type="hidden" name="idfield"
-				id="id-field" placeholder="ID" /><input type="text"
+			<td><input type="hidden" name="idfield" id="id-field"
+				placeholder="ID" /></td>
+			<td class="organization"><input type="text"
 				id="organization-field" name="organizationfield"
 				placeholder="Organization" /></td>
 			<td class="piva"><input type="text" name="pivafield"
@@ -68,40 +79,24 @@
 
 
 
-				<button class="btnOrg" id="add-btn" name="addbutton" value="true"
+				<button class="btnOrg" id="add-organization" name="addbutton"
 					data-toggle="modal" data-target="#myModal">Add</button>
-				<button class="edit-item-btn" id="edit-btn" name="editfield"
-					value="true">Edit</button>
+
+				<button class="edit-item-btn" id="edit-btn"
+					name="editbuttonorganization" value="true">Edit</button>
 			</td>
 		</table>
 	</div>
 
 
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Modal Header</h4>
-				</div>
-				<div class="modal-body" id="boxModel"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
+	
 
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="js/list.js"></script>
 
-	<script src="js/provalist.js"></script>
+	<script src="js/SupportOrganizationList.js"></script>
 	<script src="js/JSonReader.js"></script>
 
 

@@ -2,24 +2,56 @@ package it.h2i.idservice.accountablemodel.DTO;
 
 public class AddDTO {
 
+	private String success;
+	private String first_parameter;
+	private String second_parameter;
+	private String third_parameter;
+	private String four_parameter;
 	
-	public String first_parameter;
-	public String second_parameter;
-	public String third_parameter;
 	
 	
 	
-	
+	public String getFour_parameter() {
+		return four_parameter;
+	}
+
+
+
+
+	public void setFour_parameter(String four_parameter) {
+		this.four_parameter = four_parameter;
+	}
+
+
+
+
 	public AddDTO() {}
+
+	public AddDTO(String success,String f) {
+		this.success=success;
+		first_parameter = f;
 	
-	
-	
-	
-	public AddDTO(String f, String s, String t) {
 		
+	}
+	public AddDTO(String success,String f, String t) {
+		this.success=success;
+		first_parameter = f;
+		second_parameter = t;
+		
+	
+		
+	}
+	
+	
+	
+	
+	
+	public AddDTO(String success,String f, String s, String t, String fo) {
+		this.success=success;
 		first_parameter = f;
 		second_parameter = s;
 		third_parameter = t;
+		four_parameter=fo;
 		
 		
 	}
@@ -30,6 +62,20 @@ public class AddDTO {
 	
 	
 	
+	public String getSuccess() {
+		return success;
+	}
+
+
+
+
+	public void setSuccess(String success) {
+		this.success = success;
+	}
+
+
+
+
 	public String getFirst_parameter() {
 		return first_parameter;
 	}

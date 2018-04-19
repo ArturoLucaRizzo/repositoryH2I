@@ -41,6 +41,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.h2i.idservice.accountablemodel.DTO.ActionDTO;
+import it.h2i.idservice.accountablemodel.DTO.AddDTO;
 import it.h2i.idservice.accountablemodel.connection.Entity;
 import it.h2i.idservice.accountablemodel.connection.Utility;
 import it.h2i.idservice.accountablemodel.model.Appertain;
@@ -76,14 +77,14 @@ public class OrganizationController {
 	@RequestMapping("/forElements")
 	public ModelAndView pageforElements(HttpServletRequest request,HttpServletResponse response, Model model) {
 
-         RefreshCurrentUsersOrg();
+		RefreshCurrentUsersOrg();
 		return new ModelAndView("forElements","users",currentUsers);
 	}
-	
+
 	@RequestMapping("/forUsers")
 	public ModelAndView pageforListUsers(HttpServletRequest request,HttpServletResponse response, Model model) {
 
-		
+
 		Entity e = new Entity();
 		List<User> users = e.getAllUser();
 		e.close();
@@ -104,8 +105,8 @@ public class OrganizationController {
 		}
 
 		return new ModelAndView("forUsers", "users", us);
-			
-	
+
+
 	}
 	@RequestMapping("/forElementsOrganizations")
 	public ModelAndView pageforElementsOrganizations(HttpServletRequest request,HttpServletResponse response, Model model) {
@@ -113,152 +114,52 @@ public class OrganizationController {
 		currentOrganizations=e.getAllOrganizations();
 		e.close();
 		if(currentOrganizations!=null) {
-		     System.out.println("ci sono: " +currentOrganizations.size());
-			
+			System.out.println("ci sono: " +currentOrganizations.size());
+
 		}else
 			System.out.println("perchè è null?");
-  
+
 		return new ModelAndView("forElementsOrganizations","organizations",currentOrganizations);
 	}
 
 
-
-	@RequestMapping(value="/addAndEditOrg", method = RequestMethod.POST)
-	public String addeditButtonOrg(HttpServletRequest request,
-			HttpServletResponse response) {
-		vistaCorrente="organizationManager";
-		String idchar=request.getParameter("idfield");
-
-		if(request.getParameter("editfield")!=null) {
-			if(idchar==null || !new Utility().isInteger(idchar)) {
-				mavCurrent=returnViewOrganization("Error");
-				return "redirect:/"+vistaCorrente;
-			}
-			int id=Integer.parseInt(idchar);
-			String organization=request.getParameter("organizationfield");
-			String piva=request.getParameter("pivafield");
-			Organization o=null;
-			for( Organization org: currentOrganizations) {
-				if(org.getIdorganization()==id) {
-					o=org;
-				}
-			}	
-
-			if(o!=null && organization!=null && piva!=null) {
-				if(o.getName().equals(organization) && o.getPiva().equals(piva)) {
-					mavCurrent=returnViewOrganization("nessuna Modifica rilevata");
-					return "redirect:/"+vistaCorrente;
-				}
-				// controllo appartenenza organizzazione
-				o.setName(organization);
-				o.setPiva(piva);
-				Entity e = new Entity();
-				e.merge(o);
-				e.close();
-				//aggiorna currentuserS degli utenti apparteneti alle org
-
-				mavCurrent=returnViewOrganization("");
-				return "redirect:/"+vistaCorrente;
-
-			}else {
-				mavCurrent=returnViewOrganization("Modifiche errate");
-				return "redirect:/"+vistaCorrente;
-
-			}
-
-		}else {
-			//add button della view 
-			String piva=request.getParameter("pivafield");
-			if(piva==null || piva.equals("")) {
-				mavCurrent=returnViewOrganization("piva errata");
-				return "redirect:/"+vistaCorrente;
-			}
-			for( Organization org: currentOrganizations) {
-				if(org.getPiva().equals(piva)) {
-					mavCurrent=returnViewOrganization("utente gia presente");
-					return "redirect:/"+vistaCorrente;
-				}
-			}		
-			String organization=request.getParameter("organizationfield");
-			if(organization==null || organization.equals("")) {
-				mavCurrent=returnViewOrganization("nome organizzazione errato");
-				return "redirect:/"+vistaCorrente;
-			}
-			Entity e = new Entity();
-			Organization o= new Organization();
-			o.setName(organization);
-			o.setPiva(piva);
-			e.Insert(o);
-			e.close();
-			mavCurrent=returnViewOrganization("Organizzazione inserita con successo");
-			return "redirect:/"+vistaCorrente;
-
-
-		}
-
-	}
-	
-	
-	
-	
 	@RequestMapping(value="/addAndEdit", method = RequestMethod.POST)
-	public @ResponseBody ActionDTO addEditButton(@RequestBody ActionDTO rs) {
-		vistaCorrente="allUserOrganization";
+	public @ResponseBody AddDTO addEditButtonOrg(@RequestBody AddDTO rs) {
 
-		
-		
-		
-		
-		String mail=rs.getParameter();
-		Entity e = new Entity();
-		if(mail==null || !new Utility().isValidEmailAddress(mail)) {
-			mavCurrent=returnViewUser("Mail Errata");
-			return new ActionDTO("not ok",null);
-		}
-		/*}else if(request.getParameter("editfield")!=null) {//edit button della view
-			String name=request.getParameter("namefield");
-			String surname=request.getParameter("surnamefield");
-			User u=null;
-			for( User user: currentUsers) {
-				if(user.getMail().equals(mail)) {
-					u=user;
-				}
-			}	
 
-			if(u!=null && name!=null && surname!=null) {
-				if(u.getName().equals(name) && u.getSurname().equals(surname)) {
-					mavCurrent=returnViewUser("Nessuna modifica rilevata");
-					return "redirect:/"+vistaCorrente;
-				}
-				// controllo appartenenza organizzazione
-				u.setName(name);
-				u.setSurname(surname);
-				u.setMail(mail);
-				e.merge(u);
+
+		if(rs.getThird_parameter().equals("organization")) {
+
+
+			String piva = rs.getSecond_parameter();
+			String nameOrg = rs.getFirst_parameter();
+
+			Entity e = new Entity();
+			Organization o = e.getOrganization(piva);
+
+			if(o == null) {
+				o=new Organization();
+				o.setName(nameOrg);
+				o.setPiva(piva);
+				e.Insert(o);
 				e.close();
-				//aggiorna currentuserS degli utenti apparteneti alle org
 
-				mavCurrent=returnViewUser("");
-				return "redirect:/"+vistaCorrente;
+				return new AddDTO("ok",null,null,"add",null);
 
 			}else {
-				mavCurrent=returnViewUser("Modifiche errate");
-				return "redirect:/"+vistaCorrente;
 
+				return new AddDTO("not ok",null,"presente",null,null);
 			}
 
-		}else {*/
-			//add button della view 
-			User u= e.getUserByMail(mail);
+
+
+
+		}else if(rs.getThird_parameter().equals("user")) {
+
+
+			Entity e = new Entity();
+			User u= e.getUserByMail(rs.getFirst_parameter());
 			if(u!=null) {
-				for(User user:currentUsers) {
-					if(user.getMail().equals(mail)) {
-						e.close();
-
-						return new ActionDTO("not ok",null);
-
-					}
-				}
 				Appertain a =new Appertain();
 				Organization o= e.getOrganization(currentOrganization);
 				Role r= e.getRoleById(1);
@@ -269,20 +170,126 @@ public class OrganizationController {
 				u.getAppertains().add(a);
 				e.merge(u);
 				e.close();
-				return new ActionDTO("ok","add");
+				return new AddDTO("ok","add",null,null,null);
+
 			}else {
-				return new ActionDTO("not ok",null);
+
+
+				return new AddDTO("not ok",null,null,null,null);
+			}
+
+
+		}	
+
+		return new AddDTO("not ok",null,null,null,null);
+
+
+	}
+
+
+
+
+
+
+
+
+	@RequestMapping(value="/edit", method = RequestMethod.POST)
+	public @ResponseBody AddDTO EditButton(@RequestBody AddDTO rs) {
+		String type= rs.getFour_parameter();
+		if(type.equals("organizations")) {
+			String idchar=rs.getFirst_parameter();
+			String name= rs.getSecond_parameter();
+			String piva= rs.getThird_parameter();
+			if(piva==null || name==null || idchar==null) {
+
+				return new AddDTO("not ok",type,"errore nell'inserimento dei dati");
+
+			}else {
+
+				if(idchar==null || !new Utility().isInteger(idchar)) {
+					System.out.println("PIVA "+piva);
+					System.out.println("name "+name);
+					System.out.println("idchar "+idchar);
+					return new AddDTO("not ok",type,"errore nell'inserimento dei dati");
+				}
+				int id=Integer.parseInt(idchar);
+				Organization o=null;
+				for( Organization org: currentOrganizations) {
+					if(org.getIdorganization()==id) {
+						o=org;
+					}
+				}	
+
+				if(o!=null) {
+					if(o.getName().equals(name) && o.getPiva().equals(piva)) {
+						return new AddDTO("not ok",type,"modofiche inconsistenti");
+
+					}
+					// controllo appartenenza organizzazione
+					o.setName(name);
+					o.setPiva(piva);
+					Entity e = new Entity();
+					e.merge(o);
+					e.close();
+					//aggiorna currentuserS degli utenti apparteneti alle org;
+					return new AddDTO("ok",type,"Organizzazione inserita con successo");
+
+				}else {
+					return new AddDTO("not ok",type,"Organizzazione non trovata nel db");
+
+				}
+
+			}
+
+		}else if(type.equals("users")){
+			String mail= rs.getThird_parameter();
+			String name=rs.getFirst_parameter();
+			String surname=rs.getSecond_parameter();
+			if(mail==null || !new Utility().isValidEmailAddress(mail)) {
+				return new AddDTO("not ok",type,"MailErrata");
+			}
+
+			User u=null;
+			for( User user: currentUsers) {
+				if(user.getMail().equals(mail)) {
+					u=user;
+				}
+			}	
+
+			if(u!=null && name!=null && surname!=null) {
+				if(u.getName().equals(name) && u.getSurname().equals(surname)) {
+					return new AddDTO("not ok",type,"nessuna modifica rilevata");
+				}
+				// controllo appartenenza organizzazione
+				Entity e = new Entity();
+				u.setName(name);
+				u.setSurname(surname);
+				u.setMail(mail);
+				e.merge(u);
+				e.close();
+				//aggiorna currentuserS degli utenti apparteneti alle org
+
+				return new AddDTO("ok",type,"Utente "+ mail + " aggiornato");
+
+			}else {
+				return new AddDTO("not ok",type,"modifiche errate");
+
 			}
 
 
 		}
+		return new AddDTO("not ok",type,"nessun tipo rilveto");
 
-	
+
+
+
+	}
+
 
 	@RequestMapping("/organizationManager")
 	public ModelAndView organizations() {
 		vistaCorrente="organizationManager";
-	
+
 		return returnViewOrganization(null);
 	}
 
@@ -344,7 +351,7 @@ public class OrganizationController {
 
 		return new ActionDTO("ok","view");
 	}
-	
+
 	@RequestMapping(value="/enable", method = RequestMethod.POST)
 	public @ResponseBody ActionDTO Enable(@RequestBody ActionDTO rs) {
 
@@ -359,7 +366,6 @@ public class OrganizationController {
 
 		e.merge(user);	
 		e.close();
-		mavCurrent=returnViewUser("");
 		return new ActionDTO("ok","enable");
 	}
 
@@ -411,9 +417,9 @@ public class OrganizationController {
 		for( Object a: appertains) {
 			currentUsers.add(((Appertain) a).getUser());			
 		}
-		
-	
-		
+
+
+
 
 	}
 

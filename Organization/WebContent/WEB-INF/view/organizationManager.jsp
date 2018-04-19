@@ -43,8 +43,6 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<script
-		src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 	<div align="center" id="organizations">
 		<h1 style="color: white;">Organizations</h1>
 		<br> <br>
@@ -52,7 +50,7 @@
 		<br> <br> <br> <br>
 		</table>
 		<br> <br> <br> <br>
-		<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal fade" id="myModalRemove" role="dialog">
 			<div class="modal-dialog modal-sm">
 
 				<!-- Modal content-->
@@ -62,6 +60,9 @@
 						<h4 class="modal-title">Model Remove</h4>
 					</div>
 					<div class="modal-body" id="message"></div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 
 				</div>
 
@@ -69,8 +70,6 @@
 		</div>
 
 
-		<script src="js/list.js"></script>
 		<script src="js/forHelper.js"></script>
-		<script src="js/provalist.js"></script>
 </body>
 </html>

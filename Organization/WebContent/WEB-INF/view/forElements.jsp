@@ -34,13 +34,19 @@
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
 					<td class='name' id="name<c:out value="${i}"/>"
 						name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
-					<td class='surname' name='surname<c:out value="${i}"/>'
+					<td class='surname' id="surname<c:out value="${i}" />" name='surname<c:out value="${i}"/>'
 						style='color: white;'>${u.getSurname()}</td>
 					<td class='mail' id="email<c:out value="${i}"/>"
 						name='mail<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
-					<td class='edit'><button class="edit-item-btn">Edit</button></td>
-
+						
+					<td class='edit'>
+					<button id="edit<c:out value="${i}" />" name="editUserListbtn" class="edit-item-btn">Edit</button>
+				    <button id="back<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred">back</button>
+					
+					</td>
 					<td>
+					
+					
 						<button class="btnOrg" id="remove<c:out value="${i}"/>" name="rem">Remove</button>
 					</td>
 
@@ -77,7 +83,10 @@
 
 				<button class="btnOrg" id="add-btn" name="addbutton" value="true"
 					data-toggle="modal" data-target="#myModal">Add</button>
-				<button class="edit-item-btn" id="edit-btn" name="editfield"
+					
+					
+					
+				<button class="edit-item-btn" id="edit-btn" name="editbuttonuser"
 					value="true">Edit</button>
 			</td>
 		</table>
@@ -97,7 +106,7 @@
 				
 				</div>
 				<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" name="addUser" >Add</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" name="addUser" id="add-user">Add</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
@@ -121,9 +130,8 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="js/list.js"></script>
 
-	<script src="js/provalist.js"></script>
+	<script src="js/SupportUserList.js"></script>
 	<script src="js/JSonReader.js"></script>
 </body>
 </html>

@@ -1,10 +1,4 @@
 
-var options = {
-  valueNames: [ 'id', 'name', 'surname', 'mail' ]
-};
-
-// Init list
-var contactList = new List('user', options);
 
 var idField = $('#id-field'),
     nameField = $('#name-field').hide(),
@@ -18,12 +12,6 @@ var idField = $('#id-field'),
 // Sets callbacks to the buttons in the list
 refreshCallbacks();
 
-addBtn.click(function() {
-
-  nameField.hide('');
-  surnameField.hide('');
-  refreshCallbacks();
-});
 
 editBtn.click(function() {
   var item = contactList.get('id', idField.val())[0];

@@ -12,7 +12,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,7 +35,7 @@ public class Transaction  implements java.io.Serializable {
 	private static final long serialVersionUID = -5388758586558668331L;
 	private Integer idtransaction;
      private Date date;
-     private Set<Function> functions = new HashSet<Function>(0);
+     private Function function;
 
     public Transaction() {
     }
@@ -42,12 +44,24 @@ public class Transaction  implements java.io.Serializable {
     public Transaction(Date date) {
         this.date = date;
     }
-    public Transaction(Date date, Set<Function> functions) {
+    public Transaction(Date date, Function function) {
        this.date = date;
-       this.functions = functions;
+       this.function = function;
     }
-   
-     @Id @GeneratedValue(strategy=IDENTITY)
+    
+    @OneToOne
+    @JoinColumn(name = "idtransaction")
+     public Function getFunction() {
+		return function;
+	}
+
+
+	public void setFunction(Function function) {
+		this.function = function;
+	}
+
+
+	@Id @GeneratedValue(strategy=IDENTITY)
     
     @Column(name="idtransaction", unique=true, nullable=false)
     public Integer getIdtransaction() {
@@ -66,14 +80,7 @@ public class Transaction  implements java.io.Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
-@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="transaction")
-    public Set<Function> getFunctions() {
-        return this.functions;
-    }
-    
-    public void setFunctions(Set<Function> functions) {
-        this.functions = functions;
-    }
+
 
 
 
