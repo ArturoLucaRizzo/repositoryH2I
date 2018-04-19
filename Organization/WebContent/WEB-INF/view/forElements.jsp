@@ -67,7 +67,7 @@
 				id="id-field" /> <input type="text" id="name-field"
 				name="namefield" placeholder="Name"  style="display: none;"/></td>
 			<td class="surname"><input type="text" name="surnamefield"
-				id="surname-field" placeholder="surname" /></td>
+				id="surname-field" placeholder="surname" style='display: none;'/></td>
 			<td class="mail"><input type="hidden" name="mailfield"
 				id="mail-field" placeholder="mail" /></td>
 
