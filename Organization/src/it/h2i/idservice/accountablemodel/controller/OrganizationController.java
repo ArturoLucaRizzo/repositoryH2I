@@ -205,6 +205,10 @@ public class OrganizationController {
 	public @ResponseBody ActionDTO addEditButton(@RequestBody ActionDTO rs) {
 		vistaCorrente="allUserOrganization";
 
+		
+		
+		
+		
 		String mail=rs.getParameter();
 		Entity e = new Entity();
 		if(mail==null || !new Utility().isValidEmailAddress(mail)) {
