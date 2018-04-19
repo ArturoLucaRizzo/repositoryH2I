@@ -8,7 +8,6 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-
 	<table style="width: 85%">
 		<thead>
 			<tr>
@@ -25,9 +24,6 @@
 			<c:set var="i" scope="session" value="${0}" />
 			<c:forEach var="o" items="${organizations}">
 				<c:set var="i" scope="session" value="${i + 1}" />
-				<div type="hidden" id="var">
-					<c:out value="${i}" />
-				</div>
 				<tr>
 
 					<td class='id' style='color: white'
@@ -46,7 +42,7 @@
 						<button id="edit<c:out value="${i}" />" name="editListbtn"
 							class="edit-item-btn">Edit</button>
 						<button id="back<c:out value="${i}" />" name="backListbtn"
-							class="edit-item-btnred">back</button>
+							class="edit-item-btnred" style="display: none;">back</button>
 
 					</td>
 
@@ -83,7 +79,7 @@
 					data-toggle="modal" data-target="#myModal">Add</button>
 
 				<button class="edit-item-btn" id="edit-btn"
-					name="editbuttonorganization" value="true">Edit</button>
+					name="editbuttonorganization" value="true" style="display: none;">Edit</button>
 			</td>
 		</table>
 	</div>
@@ -96,8 +92,8 @@
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<script src="js/SupportOrganizationList.js"></script>
 	<script src="js/JSonReader.js"></script>
+	<script src="js/SupportOrganizationList.js"></script>
 
 
 </body>

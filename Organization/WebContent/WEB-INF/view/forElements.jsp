@@ -24,13 +24,7 @@
 
 			<c:forEach var="u" items="${users}">
 				<c:set var="i" scope="session" value="${i + 1}" />
-				<div type="hidden" id="var">
-					<c:out value="${i}" />
-				</div>
-
-
-				<tr>
-
+								<tr>
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
 					<td class='name' id="name<c:out value="${i}"/>"
 						name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
@@ -41,7 +35,7 @@
 						
 					<td class='edit'>
 					<button id="edit<c:out value="${i}" />" name="editUserListbtn" class="edit-item-btn">Edit</button>
-				    <button id="back<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred">back</button>
+				    <button id="back<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred" style="display: none;">back</button>
 					
 					</td>
 					<td>
@@ -71,7 +65,7 @@
 		<table align="center">
 			<td class="name"><input type="hidden" name="idfield"
 				id="id-field" /> <input type="text" id="name-field"
-				name="namefield" placeholder="Name" /></td>
+				name="namefield" placeholder="Name"  style="display: none;"/></td>
 			<td class="surname"><input type="text" name="surnamefield"
 				id="surname-field" placeholder="surname" /></td>
 			<td class="mail"><input type="hidden" name="mailfield"
@@ -87,7 +81,7 @@
 					
 					
 				<button class="edit-item-btn" id="edit-btn" name="editbuttonuser"
-					value="true">Edit</button>
+					value="true" style="display: none;">Edit</button>
 			</td>
 		</table>
 	</div>

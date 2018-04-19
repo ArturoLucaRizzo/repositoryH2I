@@ -8,9 +8,9 @@ $(document).ready(function(){
 	nameField = $('#name-field').hide(),
 	surnameField = $('#surname-field').hide(),
 	mailField = $('#mail-field').hide(),
-	editBtn = $("#edit-btn").hide()
+	editBtn = $("#edit-btn"),
 	editListBtn = $("button[name='editUserListbtn']"),
-	backListBtn = $("button[name='backUserListbtn']").hide(),
+	backListBtn = $("button[name='backUserListbtn']"),
 	addbutton= $('#add-btn');
 
 

@@ -70,13 +70,20 @@ $(document).ready(function(){
 		organization = document.getElementById("organization-field").value;
 		id = document.getElementById("id-field").value;
 		piva = document.getElementById("piva-field").value;
-		if (window.confirm("vuoi davvero editare : "+ organization+ "?")) {
+		if((piva.length != 11)  ||  !(/^[0-9]+$/.test( piva ))  ){
+			alert("Partita Iva non valida");
+		}
+
+		else if((organization.length==0)  ){
+
+			alert("Inserisci un nome valido");
+
+		}else if (window.confirm("Vuoi procedere con l'aggiornamento di :" +id+ " ?")) {
 			urls="edit";
 			type="organizations";
 			ajaxPost4();
 		}
 	});
-
 
 
 
@@ -94,6 +101,7 @@ $(document).ready(function(){
 	$("button[name='return']").click(function(event) {
 		event.preventDefault();
 		$("#box").load("forElementsOrganizations");
+		document.getElementById('title').innerHTML ="Organizations"
 
 	});	
 
@@ -111,6 +119,7 @@ $(document).ready(function(){
 		number=event.target.id;
 		number=number.slice(-1);
 		event.preventDefault();
+		name=document.getElementById("name"+number).textContent;
 		urls="view";
 		ajaxPost();
 
@@ -162,7 +171,9 @@ $(document).ready(function(){
 						}
 					}
 					if(data.parameter=="view"){
+						
 						$("#box").load("forElements");
+						document.getElementById('title').innerHTML ="Organization "+name;
 
 					}
 					if(data.parameter=="enable"){

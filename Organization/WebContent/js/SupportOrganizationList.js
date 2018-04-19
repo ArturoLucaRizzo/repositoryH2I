@@ -17,6 +17,8 @@ $(document).ready(function(){
 
 
 	$("button[name='editListbtn']").click(function(event) {
+		editListBtn.show();
+		backListBtn.hide(),
 		number=event.target.id;
 		number=number.slice(-1);
 		editListBtns = $('#edit'+number).hide();
@@ -35,6 +37,7 @@ $(document).ready(function(){
 	$("button[name='backListbtn']").click(function(event) {
 		number=event.target.id;
 		number=number.slice(-1);
+		
 		editListBtns = $('#edit'+number).show();
 		backListBtns = $('#back'+number).hide();
 		pivaField.val('');

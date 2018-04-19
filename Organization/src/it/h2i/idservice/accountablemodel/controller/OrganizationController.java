@@ -113,11 +113,6 @@ public class OrganizationController {
 		Entity e=new Entity();
 		currentOrganizations=e.getAllOrganizations();
 		e.close();
-		if(currentOrganizations!=null) {
-			System.out.println("ci sono: " +currentOrganizations.size());
-
-		}else
-			System.out.println("perchè è null?");
 
 		return new ModelAndView("forElementsOrganizations","organizations",currentOrganizations);
 	}
@@ -125,8 +120,6 @@ public class OrganizationController {
 
 	@RequestMapping(value="/addAndEdit", method = RequestMethod.POST)
 	public @ResponseBody AddDTO addEditButtonOrg(@RequestBody AddDTO rs) {
-
-
 
 		if(rs.getThird_parameter().equals("organization")) {
 
@@ -232,7 +225,7 @@ public class OrganizationController {
 					e.merge(o);
 					e.close();
 					//aggiorna currentuserS degli utenti apparteneti alle org;
-					return new AddDTO("ok",type,"Organizzazione inserita con successo");
+					return new AddDTO("ok",type,"Organizzazione aggiornata con successo");
 
 				}else {
 					return new AddDTO("not ok",type,"Organizzazione non trovata nel db");
