@@ -27,31 +27,31 @@
 				<tr>
 
 					<td class='id' style='color: white'
-						id="idorganizations<c:out value="${i}" />" name="idorganizations">${o.getIdorganization()}</td>
+						id="idorganizations-<c:out value="${i}" />" name="idorganizations">${o.getIdorganization()}</td>
 
-					<td class='organization' id="name<c:out value="${i}" />"
-						name='organization<c:out value="${i}" />' style='color: white;'>${o.getName()}</td>
+					<td class='organization' id="name-<c:out value="${i}" />"
+						name='organization-<c:out value="${i}" />' style='color: white;'>${o.getName()}</td>
 
-					<td class='piva' name='piva<c:out value="${i}" />'
-						id="piva<c:out value="${i}" />" style='color: white;'>${o.getPiva()}</td>
+					<td class='piva' name='piva-<c:out value="${i}" />'
+						id="piva-<c:out value="${i}" />" style='color: white;'>${o.getPiva()}</td>
 
-					<td class='users' id="users<c:out value="${i}" />" name='users'
+					<td class='users' id="users-<c:out value="${i}" />" name='users'
 						style='color: white;'>${o.getAppertains().size()}</td>
 
 					<td class='edit'>
-						<button id="edit<c:out value="${i}" />" name="editListbtn"
+						<button id="edit-<c:out value="${i}" />" name="editListbtn"
 							class="edit-item-btn">Edit</button>
-						<button id="back<c:out value="${i}" />" name="backListbtn"
+						<button id="back-<c:out value="${i}" />" name="backListbtn"
 							class="edit-item-btnred" style="display: none;">back</button>
 
 					</td>
 
 
 					<td>
-						<button class="btnOrg" id="remove<c:out value="${i}"/>" name="rem">Remove</button>
+						<button class="btnOrg" id="remove-<c:out value="${i}"/>" name="rem">Remove</button>
 					</td>
 
-					<td><button class="btnOrg" id="viewUser<c:out value="${i}"/>"
+					<td><button class="btnOrg" id="viewUser-<c:out value="${i}"/>"
 							name="viewUser">View</button></td>
 
 

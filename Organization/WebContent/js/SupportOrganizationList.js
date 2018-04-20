@@ -20,15 +20,15 @@ $(document).ready(function(){
 		editListBtn.show();
 		backListBtn.hide(),
 		number=event.target.id;
-		number=number.slice(-1);
-		editListBtns = $('#edit'+number).hide();
-		backListBtns = $('#back'+number).show();
-		piva=document.getElementById("piva"+number).textContent;
+		number=number.split('-')[1];
+		editListBtns = $('#edit-'+number).hide();
+		backListBtns = $('#back-'+number).show();
+		piva=document.getElementById("piva-"+number).textContent;
 		pivaField.val(piva);
-		organizationField.val(document.getElementById("name"+number).textContent);
+		organizationField.val(document.getElementById("name-"+number).textContent);
 		organizationField = $('#organization-field').show();
 		pivaField = $('#piva-field').show();
-        idField.val(document.getElementById("idorganizations"+number).textContent);
+        idField.val(document.getElementById("idorganizations-"+number).textContent);
 		editBtn.show();
 		addbutton.hide();
 
@@ -36,10 +36,10 @@ $(document).ready(function(){
 	});
 	$("button[name='backListbtn']").click(function(event) {
 		number=event.target.id;
-		number=number.slice(-1);
+		number=number.split('-')[1];
 		
-		editListBtns = $('#edit'+number).show();
-		backListBtns = $('#back'+number).hide();
+		editListBtns = $('#edit-'+number).show();
+		backListBtns = $('#back-'+number).hide();
 		pivaField.val('');
 		organizationField.val('');
 		editBtn.hide();

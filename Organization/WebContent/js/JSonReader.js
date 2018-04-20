@@ -7,10 +7,10 @@ $(document).ready(function(){
 
 	$("button[name='addbutton']").click(function(event) {
 
-		number=event.target.id;
+		var idbutton=event.target.id;
 
 
-		if(number=="add-organization"){
+		if(idbutton=="add-organization"){
 
 			organization	=	document.getElementById("organization-field").value;
 			piva	=	document.getElementById("piva-field").value;	
@@ -29,7 +29,7 @@ $(document).ready(function(){
 			}
 
 		} else {
-			if(number=="add-btn"){
+			if(idbutton=="add-btn"){
 				$("#boxModel").load("forUsers");
 				$("button[name='addUser']").click(function() {
 					mail = $('#us option:selected').text();
@@ -89,9 +89,9 @@ $(document).ready(function(){
 
 	$("button[name='rem']").click(function(event) {
 		number=event.target.id;
-		number=number.slice(-1);
+		number=number.split('-')[1];
 		event.preventDefault();
-		if (window.confirm("vuoi eliminare "+ document.getElementById("name"+number).textContent+" ?")) {
+		if (window.confirm("vuoi eliminare "+ document.getElementById("name-"+number).textContent+" ?")) {
 			urls="delete"
 				ajaxPost();
 		}
@@ -107,9 +107,9 @@ $(document).ready(function(){
 
 	$("button[name='enable']").click(function(event) {
 		number=event.target.id;
-		number=number.slice(-1);
+		number=number.split('-')[1];
 		event.preventDefault();
-		if (window.confirm("vuoi abilitare/disabilitare "+ document.getElementById("name"+number).textContent+" ?")) {
+		if (window.confirm("vuoi abilitare/disabilitare "+ document.getElementById("name-"+number).textContent+" ?")) {
 			urls="enable";
 			ajaxPost();
 		}
@@ -117,9 +117,9 @@ $(document).ready(function(){
 
 	$("button[name='viewUser']").click(function(event) {
 		number=event.target.id;
-		number=number.slice(-1);
+		number=number.split('-')[1];
 		event.preventDefault();
-		name=document.getElementById("name"+number).textContent;
+		name=document.getElementById("name-"+number).textContent;
 		urls="view";
 		ajaxPost();
 
@@ -130,15 +130,15 @@ $(document).ready(function(){
 
 	function ajaxPost(){
 		var ActiveDTO;
-		if(document.getElementById("email"+number)==null){
+		if(document.getElementById("email-"+number)==null){
 			ActiveDTO= {
 					"success" : "true",
-					"parameter" : document.getElementById("piva"+number).textContent
+					"parameter" : document.getElementById("piva-"+number).textContent
 			}	
 		}else{
 			ActiveDTO= {
 					"success" : "true",
-					"parameter" : document.getElementById("email"+number).textContent
+					"parameter" : document.getElementById("email-"+number).textContent
 
 
 			}

@@ -21,14 +21,14 @@ $(document).ready(function(){
 		editListBtn.show();
 		backListBtn.hide(),
 		number=event.target.id;
-		number=number.slice(-1);
+		number=number.split('-')[1];
 		surnameField.show();
 		nameField.show();
-		editListBtns = $('#edit'+number).hide();
-		backListBtns = $('#back'+number).show();
-		nameField.val(document.getElementById("name"+number).textContent);
-		surnameField.val(document.getElementById("surname"+number).textContent);
-		mailField.val(document.getElementById("email"+number).textContent);
+		editListBtns = $('#edit-'+number).hide();
+		backListBtns = $('#back-'+number).show();
+		nameField.val(document.getElementById("name-"+number).textContent);
+		surnameField.val(document.getElementById("surname-"+number).textContent);
+		mailField.val(document.getElementById("email-"+number).textContent);
 		editBtn.show();
 		addbutton.hide();
 
@@ -38,9 +38,9 @@ $(document).ready(function(){
 		editListBtn.show();
 		backListBtn.hide(),
 		number=event.target.id;
-		number=number.slice(-1);
-		editListBtns = $('#edit'+number).show();
-		backListBtns = $('#back'+number).hide();
+		nnumber=number.split('-')[1];
+		editListBtns = $('#edit-'+number).show();
+		backListBtns = $('#back-'+number).hide();
 		nameField.val('');
 		surnameField.val('');
 		mailField.val('');

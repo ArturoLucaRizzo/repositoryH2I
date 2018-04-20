@@ -26,29 +26,29 @@
 				<c:set var="i" scope="session" value="${i + 1}" />
 								<tr>
 					<td class='id' style='display: none;'>${u.getIduser()}</td>
-					<td class='name' id="name<c:out value="${i}"/>"
-						name='name<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
-					<td class='surname' id="surname<c:out value="${i}" />" name='surname<c:out value="${i}"/>'
+					<td class='name' id="name-<c:out value="${i}"/>"
+						name='name-<c:out value="${i}"/>' style='color: white;'>${u.getName()}</td>
+					<td class='surname' id="surname-<c:out value="${i}" />" name='surname-<c:out value="${i}"/>'
 						style='color: white;'>${u.getSurname()}</td>
-					<td class='mail' id="email<c:out value="${i}"/>"
-						name='mail<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
+					<td class='mail' id="email-<c:out value="${i}"/>"
+						name='mail-<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
 						
 					<td class='edit'>
-					<button id="edit<c:out value="${i}" />" name="editUserListbtn" class="edit-item-btn">Edit</button>
-				    <button id="back<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred" style="display: none;">back</button>
+					<button id="edit-<c:out value="${i}" />" name="editUserListbtn" class="edit-item-btn">Edit</button>
+				    <button id="back-<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred" style="display: none;">back</button>
 					
 					</td>
 					<td>
 					
 					
-						<button class="btnOrg" id="remove<c:out value="${i}"/>" name="rem">Remove</button>
+						<button class="btnOrg" id="remove-<c:out value="${i}"/>" name="rem">Remove</button>
 					</td>
 
 					<td style="color: blue;"><c:if test="${u.enable}">
-							<button class="btnOrgRed" id="enable<c:out value="${i}"/>"
+							<button class="btnOrgRed" id="enable-<c:out value="${i}"/>"
 								name="enable">Disable</button>
 						</c:if> <c:if test="${not u.enable}">
-							<button class="btnOrg" id="enable<c:out value="${i}"/>"
+							<button class="btnOrg" id="enable-<c:out value="${i}"/>"
 								name="enable">Enable</button>
 						</c:if></td>
 				</tr>
