@@ -9,6 +9,6 @@ import it.h2i.idservice.accountablemodel.model.User;
 public interface OrganizationServices {
 	
 	
-	public Response Login(String username, String password);
+	public Response Login(LoginRequest request);
 
 }
