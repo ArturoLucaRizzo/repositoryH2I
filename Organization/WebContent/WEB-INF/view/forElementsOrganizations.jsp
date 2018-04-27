@@ -39,10 +39,10 @@
 						style='color: white;'>${o.getAppertains().size()}</td>
 
 					<td class='edit'>
-						<button id="edit-<c:out value="${i}" />" name="editListbtn"
+						<button style="height:40px;width:80px" id="edit-<c:out value="${i}" />" name="editListbtn"
 							class="edit-item-btn">Edit</button>
-						<button id="back-<c:out value="${i}" />" name="backListbtn"
-							class="edit-item-btnred" style="display: none;">back</button>
+						<button style="height:40px;display: none;width:80px" id="back-<c:out value="${i}" />" name="backListbtn"
+							class="edit-item-btnred" >back</button>
 
 					</td>
 

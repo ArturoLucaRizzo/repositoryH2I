@@ -34,8 +34,8 @@
 						name='mail-<c:out value="${i}"/>' style='color: white;'>${u.getMail()}</td>
 						
 					<td class='edit'>
-					<button id="edit-<c:out value="${i}" />" name="editUserListbtn" class="edit-item-btn">Edit</button>
-				    <button id="back-<c:out value="${i}" />" name="backUserListbtn" class="edit-item-btnred" style="display: none;">back</button>
+					<button id="edit-<c:out value="${i}" />" style="height:40px;width:80px" name="editUserListbtn" class="edit-item-btn">Edit</button>
+				    <button style="height:40px;display: none;width:80px" id="back-<c:out value="${i}" />"  name="backUserListbtn" class="edit-item-btnred">back</button>
 					
 					</td>
 					<td>

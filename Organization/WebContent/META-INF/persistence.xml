@@ -16,6 +16,7 @@
 		<class>it.h2i.idservice.accountablemodel.model.Appertain</class>
 		<class>it.h2i.idservice.accountablemodel.model.AppertainId</class>
 		<class>it.h2i.idservice.accountablemodel.model.Token</class>
+		<class>it.h2i.idservice.accountablemodel.model.Session_Token</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />

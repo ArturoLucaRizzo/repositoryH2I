@@ -19,6 +19,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.springframework.aop.ThrowsAdvice;
 
@@ -52,6 +54,7 @@ public class User  implements java.io.Serializable {
 	private String mail;
 	private String password;
 	private String role;
+	
 
 
 
@@ -72,8 +75,23 @@ public class User  implements java.io.Serializable {
 
 
 	private List<Appertain> appertains = new LinkedList();
+	
+	private List<Session_Token> session_token = new LinkedList();
 
-	private Token token;
+	private Token token; 
+
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="user2")
+	public List<Session_Token> getSession_token() {
+		return session_token;
+	}
+
+
+	public void setSession_token(List<Session_Token> session_token) {
+		this.session_token = session_token;
+	}
+
+
 
 	private boolean enable;
 
@@ -125,7 +143,6 @@ public class User  implements java.io.Serializable {
 	}
 
 	@Id @GeneratedValue(strategy=IDENTITY)
-
 	@Column(name="iduser", unique=true, nullable=false)
 	public Integer getIduser() {
 		return this.iduser;

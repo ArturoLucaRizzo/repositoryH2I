@@ -26,7 +26,6 @@ ApplicationListener<OnRegistrationCompleteEvent> {
 	}
 
 	private void confirmRegistration(OnRegistrationCompleteEvent event) {
-		System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 		if(event.isFlag()) {	
 			User user = event.getUser();
 			String token = UUID.randomUUID().toString();

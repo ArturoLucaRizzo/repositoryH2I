@@ -291,7 +291,7 @@ public class SpringController {
 			eventPublisher.publishEvent(new OnRegistrationCompleteEvent
 					(registered, request.getLocale(), appUrls));
 		} catch (Exception me) {
-			logger.error("eventooooooooooooooooooooooooooooo",me);
+			logger.error("eventoo",me);
 			return new ModelAndView("register", "errors", "si e verificato un errore sull'invio della mail");
 		}		
 		entity.merge(registered);

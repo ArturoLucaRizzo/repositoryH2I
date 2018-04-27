@@ -1,6 +1,7 @@
 package it.h2i.idservice.accountablemodel.connection;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.EntityManager;
 import it.h2i.idservice.accountablemodel.model.Appertain;
 import it.h2i.idservice.accountablemodel.model.Organization;
 import it.h2i.idservice.accountablemodel.model.Role;
+import it.h2i.idservice.accountablemodel.model.Session_Token;
 import it.h2i.idservice.accountablemodel.model.Token;
 import it.h2i.idservice.accountablemodel.model.User;
 
@@ -55,6 +57,17 @@ public class Entity {
 		return o;
 
 	}
+	
+	public void setSessionToken(User u, String token){
+		Session_Token s=new Session_Token(token);
+
+		s.setUser2(u);
+		Insert(s);
+		
+		
+	}
+	
+	
 
 	public void deleteAppertainByOrg(int idUser, int idOrg) {
 		EntityManager em=c.getEntity();

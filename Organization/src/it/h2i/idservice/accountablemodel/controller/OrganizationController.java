@@ -205,11 +205,16 @@ public class OrganizationController {
 					System.out.println("idchar "+idchar);
 					return new AddDTO("not ok",type,"errore nell'inserimento dei dati");
 				}
+				
 				int id=Integer.parseInt(idchar);
 				Organization o=null;
 				for( Organization org: currentOrganizations) {
 					if(org.getIdorganization()==id) {
 						o=org;
+					}
+					if(org.getPiva().equals(piva)) {
+						return new AddDTO("not ok",type,"questa partita iva è gia assegnata ad altra organizzazione");
+						
 					}
 				}	
 
