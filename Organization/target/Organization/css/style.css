@@ -148,7 +148,7 @@ body {
 		linear-gradient(135deg, #670d10 0%, #092756 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D',
 		endColorstr='#092756', GradientType=1);
-}
+	overflow: auto;}
 
 .login {
 	position: absolute;
